@@ -7,12 +7,9 @@ import java.util.List;
 
 @Repository
 public class MedicalRecordRepository {
-    private DataRepository dataRepository = new DataRepository();
-
-    List<MedicalRecord> medicalRecordList;
+    public static List<MedicalRecord> medicalRecordList;
 
     public List<MedicalRecord> getAllMedicalRecords(){
-        medicalRecordList = List.of(dataRepository.getMedicalRecordsFromFile());
         return medicalRecordList;
     }
 }

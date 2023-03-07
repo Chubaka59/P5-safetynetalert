@@ -34,16 +34,19 @@ public class DataRepository {
 
     public Person[] getPersonsFromFile(){
         getDataFromFile(filePath);
+        logger.info("Person loaded");
         return data.getPersons();
     }
 
     public FireStation[] getFireStationsFromFile(){
         getDataFromFile(filePath);
+        logger.info("FireStation loaded");
         return data.getFirestations();
     }
 
     public MedicalRecord[] getMedicalRecordsFromFile(){
         getDataFromFile(filePath);
+        logger.info("MedicalRecord loaded");
         return data.getMedicalRecords();
     }
 }
