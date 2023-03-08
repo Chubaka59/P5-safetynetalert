@@ -1,15 +1,11 @@
 package com.openclassrooms.safetynetalert.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.util.List;
 
 @lombok.Data
-@JsonPropertyOrder({"persons","firestations","medicalrecords"})
 public class Data {
-    @JsonProperty("persons")
-    Person[] persons;
-    @JsonProperty("firestations")
-    FireStation[] firestations;
-    @JsonProperty("medicalrecords")
-    MedicalRecord[] medicalRecords;
+
+    List<Person> persons;
+    List<FireStation> firestations;
+    List<MedicalRecord> medicalRecords;
 }

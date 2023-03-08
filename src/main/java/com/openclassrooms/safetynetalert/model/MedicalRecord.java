@@ -1,20 +1,18 @@
 package com.openclassrooms.safetynetalert.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-@JsonPropertyOrder({"firstName","lastName","birthdate","medications","allergies"})
 public class MedicalRecord {
-    @JsonProperty("firstName")
+    @NotEmpty
     private String firstName;
-    @JsonProperty("lastName")
+    @NotEmpty
     private String lastName;
-    @JsonProperty("birthdate")
+    @NotEmpty
     private String birthdate;
-    @JsonProperty("medications")
+    @NotEmpty
     private String[] medications;
-    @JsonProperty("allergies")
+    @NotEmpty
     private String[] allergies;
 }

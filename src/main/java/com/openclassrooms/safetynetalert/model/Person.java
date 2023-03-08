@@ -1,24 +1,22 @@
 package com.openclassrooms.safetynetalert.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-@JsonPropertyOrder({"firstName","lastName","address","city","zip","phone","email"})
 public class Person {
-    @JsonProperty("firstName")
+    @NotEmpty
     String firstName;
-    @JsonProperty("lastName")
+    @NotEmpty
     String lastName;
-    @JsonProperty("address")
+    @NotEmpty
     String address;
-    @JsonProperty("city")
+    @NotEmpty
     String city;
-    @JsonProperty("zip")
+    @NotEmpty
     String zip;
-    @JsonProperty("phone")
+    @NotEmpty
     String phone;
-    @JsonProperty("email")
+    @NotEmpty
     String email;
 }

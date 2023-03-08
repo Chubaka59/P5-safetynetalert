@@ -1,15 +1,8 @@
 package com.openclassrooms.safetynetalert;
 
-import com.openclassrooms.safetynetalert.repository.DataRepository;
-import com.openclassrooms.safetynetalert.repository.FireStationRepository;
-import com.openclassrooms.safetynetalert.repository.MedicalRecordRepository;
-import com.openclassrooms.safetynetalert.repository.PersonRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class Safetynetalert2Application implements CommandLineRunner {
