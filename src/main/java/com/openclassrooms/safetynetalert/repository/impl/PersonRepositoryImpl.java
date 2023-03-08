@@ -45,7 +45,7 @@ public class PersonRepositoryImpl implements PersonRepository {
         return dataRepository.getPersons().removeIf(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName));
     }
 
-    private boolean isDuplicate(Person person) {
+    public boolean isDuplicate(Person person) {
         return dataRepository.getPersons()
                 .stream().anyMatch(p -> p.getFirstName().equals(person.getFirstName()) &&
                         p.getLastName().equals(person.getLastName()) &&

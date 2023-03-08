@@ -2,6 +2,7 @@ package com.openclassrooms.safetynetalert.service.impl;
 
 import com.openclassrooms.safetynetalert.model.Person;
 import com.openclassrooms.safetynetalert.repository.impl.PersonRepositoryImpl;
+import com.openclassrooms.safetynetalert.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

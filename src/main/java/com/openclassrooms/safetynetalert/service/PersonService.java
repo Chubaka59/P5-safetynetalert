@@ -1,19 +1,20 @@
-package com.openclassrooms.safetynetalert.repository;
+package com.openclassrooms.safetynetalert.service;
 
 import com.openclassrooms.safetynetalert.model.Person;
 
 import java.util.List;
 
-public interface PersonRepository {
-    /**
-     * get all Person from DataRepository
-     * @return a list of Person
-     */
-    List<Person> getAllPersons();
+public interface PersonService {
 
     /**
-     * add a person to the personList
-     * @param person the person to add
+     * get personList from repository
+     * @return a list of person
+     */
+    List<Person> getPersons();
+
+    /**
+     * add a person to personList
+     * @param person person to add
      * @return a boolean
      */
     boolean add(Person person);
@@ -25,13 +26,6 @@ public interface PersonRepository {
      * @return a boolean
      */
     boolean delete(String firstName, String lastName);
-
-    /**
-     * check if a person is already in the personList
-     * @param person the person to check if duplicated
-     * @return a boolean
-     */
-    boolean isDuplicate(Person person);
 
     /**
      * update the information of a person in the personList

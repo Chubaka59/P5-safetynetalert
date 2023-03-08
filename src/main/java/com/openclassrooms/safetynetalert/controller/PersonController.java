@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.controller;
 
+import com.openclassrooms.safetynetalert.model.OnUpdate;
 import com.openclassrooms.safetynetalert.model.Person;
 import com.openclassrooms.safetynetalert.service.impl.PersonServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,6 @@ public class PersonController {
     @PostMapping (value = "/persons")
     public ResponseEntity<Person> add(@RequestBody @Validated Person person) {
         if (personService.add(person)) {
-            personService.add(person);
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .buildAndExpand(person.getFirstName())
@@ -48,7 +48,7 @@ public class PersonController {
     }
 
     @PutMapping (value = "/persons/{firstName}&{lastName}")
-    public ResponseEntity<Person> update(@RequestBody @Validated Person person, @PathVariable String firstName, @PathVariable String lastName){
+    public ResponseEntity<Person> update(@RequestBody @Validated(OnUpdate.class) Person person, @PathVariable String firstName, @PathVariable String lastName){
         if (personService.update(person, firstName, lastName)){
             return new ResponseEntity<>(HttpStatus.OK);
         }

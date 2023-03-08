@@ -1,22 +1,32 @@
 package com.openclassrooms.safetynetalert.model;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Null;
 import lombok.Data;
 
 @Data
 public class Person {
-    @NotEmpty
+    @Null(groups = OnUpdate.class)
+    @NotBlank
     String firstName;
-    @NotEmpty
+    @Null(groups = OnUpdate.class)
+    @NotBlank
     String lastName;
-    @NotEmpty
+    @NotBlank
+    @NotBlank(groups = OnUpdate.class)
     String address;
-    @NotEmpty
+    @NotBlank
+    @NotBlank(groups = OnUpdate.class)
     String city;
-    @NotEmpty
+    @NotBlank
+    @NotBlank(groups = OnUpdate.class)
     String zip;
-    @NotEmpty
+    @NotBlank
+    @NotBlank(groups = OnUpdate.class)
     String phone;
-    @NotEmpty
+    @NotBlank
+    @NotBlank(groups = OnUpdate.class)
+    @Email
     String email;
 }
