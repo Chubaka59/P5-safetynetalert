@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,8 @@ public class DataRepositoryTest {
     DataRepositoryImpl dataRepositoryImpl;
     @Mock
     private ObjectMapper objectMapper;
-    @InjectMocks
-    private Data data;
+
+    private Data data = new Data();
 
 
     @BeforeEach

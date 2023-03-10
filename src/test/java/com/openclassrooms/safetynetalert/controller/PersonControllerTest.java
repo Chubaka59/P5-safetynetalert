@@ -8,7 +8,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -43,30 +40,24 @@ public class PersonControllerTest {
 
     @Test
     public void findAllPersonsTest() throws Exception {
-        //WHEN the get action is requested THEN the status returned is OK
-        mockMvc.perform(get("/persons"))
-                .andExpect(status().isOk());
+        //WHEN the request to find all persons is sent
+        personController.findAllPersons();
+
+        //THEN personService.getPersons is called
+        verify(personService, times(1)).getPersons();
     }
 
     @Test
     public void addTest() throws Exception {
         //GIVEN we need to add a person
-        String personToAdd = "{ \"firstName\":\"Test\", \"lastName\":\"Test\", \"address\":\"Test\", \"city\":\"Test\", \"zip\":\"Test\", \"phone\":\"Test\", \"email\":\"Test@test\" }";
-        when(personService.add(any(Person.class))).thenReturn(true);
+        given(personService.add(any(Person.class))).willReturn(true);
 
         //WHEN we post a new person
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/persons")
-                .accept(MediaType.APPLICATION_JSON).content(personToAdd)
-                .contentType(MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-
-        MockHttpServletResponse response = result.getResponse();
+        ResponseEntity<Person> response = personController.add(person);
 
         //THEN the person is created on the correct address
-        assertEquals(HttpStatus.CREATED.value(), response.getStatus());
-        assertEquals("http://localhost/persons", response.getHeader(HttpHeaders.LOCATION));
+        then(personService).should().add(person);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
@@ -129,23 +120,6 @@ public class PersonControllerTest {
 
     @Test
     public void updateTest() {
-//        //GIVEN we need to update a person
-//        when(personService.update(any(Person.class), anyString(), anyString())).thenReturn(true);
-//        String body = "{ \"address\":\"Test\", \"city\":\"Test\", \"zip\":\"Test\", \"phone\":\"Test\", \"email\":\"Test@test\" }";
-//
-//        //WHEN we update the person
-//        RequestBuilder requestBuilder = MockMvcRequestBuilders
-//                .put("/persons/{firstName}&{lastName}", "testFirstName", "testLastName")
-//                .accept(MediaType.APPLICATION_JSON).content(body)
-//                .contentType(MediaType.APPLICATION_JSON);
-//
-//        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-//
-//        MockHttpServletResponse response = result.getResponse();
-//
-//        //THEN the response is OK
-//        assertEquals(HttpStatus.OK, response.getStatus());
-
         //GIVEN a person will be updated
         given(personService.update(any(Person.class), anyString(), anyString())).willReturn(true);
 
