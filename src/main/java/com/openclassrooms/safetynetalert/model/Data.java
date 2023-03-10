@@ -6,6 +6,6 @@ import java.util.List;
 public class Data {
 
     List<Person> persons;
-    List<FireStation> firestations;
+    List<FireStation> fireStations;
     List<MedicalRecord> medicalRecords;
 }

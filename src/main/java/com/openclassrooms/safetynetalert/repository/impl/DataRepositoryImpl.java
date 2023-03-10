@@ -31,7 +31,6 @@ public class DataRepositoryImpl implements DataRepository {
         File resourceFile = new ClassPathResource("data.json").getFile();
         log.info("File address = " + resourceFile.getAbsolutePath());
         data = objectMapper.readValue( resourceFile , Data.class);
-
     }
 
     public List<Person> getPersons(){
@@ -39,7 +38,7 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     public List<FireStation> getFireStations(){
-        return data.getFirestations();
+        return data.getFireStations();
     }
 
     public List<MedicalRecord> getMedicalRecords(){
