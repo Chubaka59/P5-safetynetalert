@@ -35,7 +35,7 @@ public interface PersonRepository {
 
     /**
      * update the information of a person in the personList
-     * @param person the information to be updated
+     * @param person the information to update
      * @param firstName the firstName of the person to update
      * @param lastName the lastName of the person to update
      * @return a boolean
