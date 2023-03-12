@@ -5,18 +5,14 @@ import com.openclassrooms.safetynetalert.repository.impl.PersonRepositoryImpl;
 import com.openclassrooms.safetynetalert.service.impl.PersonServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 public class PersonServiceTest {
-    PersonRepositoryImpl personRepository = Mockito.mock(PersonRepositoryImpl.class);
+    PersonRepositoryImpl personRepository = mock(PersonRepositoryImpl.class);
     PersonServiceImpl personService;
     Person person;
 
@@ -58,7 +54,7 @@ public class PersonServiceTest {
         when(personRepository.delete(anyString(), anyString())).thenReturn(true);
 
         //WHEN the method is called
-        personService.delete("test", "test");
+        personService.delete(anyString(), anyString());
 
         //THEN personRepository.delete is called 1 time
         verify(personRepository, times(1)).delete(anyString(), anyString());
@@ -66,10 +62,13 @@ public class PersonServiceTest {
 
     @Test
     public void updateTest(){
+        //GIVEN when the method is called, it should return a boolean
         when(personRepository.update(any(Person.class), anyString(), anyString())).thenReturn(true);
 
+        //WHEN the method is called
         personService.update(person, "test", "test");
 
+        //THEN personRepository.update is called 1 time
         verify(personRepository, times(1)).update(any(Person.class), anyString(), anyString());
     }
 }

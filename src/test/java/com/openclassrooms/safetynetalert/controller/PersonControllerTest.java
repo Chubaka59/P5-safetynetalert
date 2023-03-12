@@ -55,13 +55,14 @@ public class PersonControllerTest {
         //WHEN we post a new person
         ResponseEntity<Person> response = personController.add(person);
 
-        //THEN the person is created on the correct address
+        //THEN the person is createds
         then(personService).should().add(person);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
     public void addWhenAFieldIsMissing() throws Exception {
+        //TODO this is an IT, need to move it in IT Test
         String body = "{ \"lastName\":\"Test\", \"address\":\"Test\", \"city\":\"Test\", \"zip\":\"Test\", \"phone\":\"Test\", \"email\":\"Test@test\" }";
         when(personService.add(any(Person.class))).thenReturn(true);
 
@@ -98,10 +99,10 @@ public class PersonControllerTest {
         given(personService.delete(anyString(),anyString())).willReturn(true);
 
         //WHEN we request to delete the person
-        ResponseEntity<Person> response = personController.delete("test","test");
+        ResponseEntity<Person> response = personController.delete(anyString(), anyString());
 
         //THEN the method to delete is called and the response is OK
-        then(personService).should().delete("test","test");
+        then(personService).should().delete(anyString(), anyString());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
@@ -111,10 +112,10 @@ public class PersonControllerTest {
         given(personService.delete(anyString(), anyString())).willReturn(false);
 
         //WHEN we request to delete the person
-        ResponseEntity<Person> response = personController.delete("test","test");
+        ResponseEntity<Person> response = personController.delete(anyString(), anyString());
 
         //THEN the method to delete is called and the response is NOT_FOUND
-        then(personService).should().delete("test","test");
+        then(personService).should().delete(anyString(), anyString());
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
