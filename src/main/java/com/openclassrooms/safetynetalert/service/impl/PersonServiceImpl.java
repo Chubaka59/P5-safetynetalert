@@ -13,18 +13,22 @@ import java.util.List;
 public class PersonServiceImpl implements PersonService {
     private final PersonRepositoryImpl personRepository;
 
+    @Override
     public List<Person> getPersons(){
         return personRepository.getAllPersons();
     }
 
+    @Override
     public boolean add(Person person) {
         return personRepository.add(person);
     }
 
+    @Override
     public boolean delete(String firstName, String lastName) {
         return personRepository.delete(firstName, lastName);
     }
 
+    @Override
     public boolean update(Person person, String firstName, String lastName) {
         return personRepository.update(person, firstName, lastName);
     }

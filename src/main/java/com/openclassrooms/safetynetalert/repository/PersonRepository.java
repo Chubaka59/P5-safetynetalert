@@ -38,7 +38,7 @@ public interface PersonRepository {
      * @param person the information to be updated
      * @param firstName the firstName of the person to update
      * @param lastName the lastName of the person to update
-     * @return boolean
+     * @return a boolean
      */
     boolean update(Person person, String firstName, String lastName);
 }

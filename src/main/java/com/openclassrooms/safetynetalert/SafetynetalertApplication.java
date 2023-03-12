@@ -5,10 +5,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Safetynetalert2Application implements CommandLineRunner {
+public class SafetynetalertApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(Safetynetalert2Application.class, args);
+        SpringApplication.run(SafetynetalertApplication.class, args);
     }
 
     @Override

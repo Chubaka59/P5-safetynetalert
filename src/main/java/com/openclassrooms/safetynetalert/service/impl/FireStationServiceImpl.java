@@ -19,4 +19,19 @@ public class FireStationServiceImpl  implements FireStationService {
     public List<FireStation> getFireStations(){
         return fireStationRepository.getAllFireStation();
     }
+
+    @Override
+    public boolean add(FireStation fireStation) {
+        return fireStationRepository.add(fireStation);
+    }
+
+    @Override
+    public boolean delete(String address) {
+        return fireStationRepository.delete(address);
+    }
+
+    @Override
+    public boolean update(FireStation fireStation, String address) {
+        return fireStationRepository.update(fireStation, address);
+    }
 }

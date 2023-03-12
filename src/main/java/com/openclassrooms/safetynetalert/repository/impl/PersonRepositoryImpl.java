@@ -13,16 +13,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class PersonRepositoryImpl implements PersonRepository {
     private final DataRepositoryImpl dataRepository;
 
+    @Override
     public List<Person> getAllPersons() {
         return dataRepository.getPersons();
     }
 
+    @Override
     public boolean add(Person person) {
         if (!isDuplicate(person))
             return dataRepository.getPersons().add(person);
         return false;
     }
-
 
     public List<Person> findByAddress(String address) {
         return dataRepository.getPersons()
@@ -30,7 +31,6 @@ public class PersonRepositoryImpl implements PersonRepository {
                 .filter(person -> person.getAddress().equals(address))
                 .toList();
     }
-
 
     public List<String> findByAddressAndReturnPhoneNumber(String address) {
         return dataRepository.getPersons()
@@ -40,11 +40,12 @@ public class PersonRepositoryImpl implements PersonRepository {
                 .toList();
     }
 
-
+    @Override
     public boolean delete(String firstName, String lastName) {
         return dataRepository.getPersons().removeIf(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName));
     }
 
+    @Override
     public boolean isDuplicate(Person person) {
         return dataRepository.getPersons()
                 .stream().anyMatch(p -> p.getFirstName().equals(person.getFirstName()) &&
@@ -57,6 +58,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 
     }
 
+    @Override
     public boolean update(Person person, String firstName, String lastName) {
         AtomicBoolean isDone = new AtomicBoolean(false);
         dataRepository.getPersons()
