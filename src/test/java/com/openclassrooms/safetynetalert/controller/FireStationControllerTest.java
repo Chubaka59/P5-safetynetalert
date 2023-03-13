@@ -61,6 +61,7 @@ public class FireStationControllerTest {
     @Test
     public void addWhenAFieldIsMissingTest() throws Exception {
         //TODO this is an IT, need to move it in IT Test
+        //GIVEN a field is missing in the body
         String body = "{ \"station\":\"3\" },";
         when(fireStationService.add(any(FireStation.class))).thenReturn(true);
 
@@ -74,7 +75,7 @@ public class FireStationControllerTest {
 
         MockHttpServletResponse response = result.getResponse();
 
-        //THEN the person is created on the correct address
+        //THEN we get a response BAD_REQUEST
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
     }
 

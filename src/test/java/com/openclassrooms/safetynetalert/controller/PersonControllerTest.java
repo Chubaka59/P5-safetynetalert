@@ -4,7 +4,6 @@ import com.openclassrooms.safetynetalert.model.Person;
 import com.openclassrooms.safetynetalert.service.impl.PersonServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +28,7 @@ import static org.mockito.Mockito.*;
 public class PersonControllerTest {
     @Autowired
     MockMvc mockMvc;
-    PersonServiceImpl personService = Mockito.mock(PersonServiceImpl.class);
+    PersonServiceImpl personService = mock(PersonServiceImpl.class);
     PersonController personController;
     Person person;
     @BeforeEach
@@ -55,7 +54,7 @@ public class PersonControllerTest {
         //WHEN we post a new person
         ResponseEntity<Person> response = personController.add(person);
 
-        //THEN the person is createds
+        //THEN the person is created
         then(personService).should().add(person);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
@@ -63,6 +62,7 @@ public class PersonControllerTest {
     @Test
     public void addWhenAFieldIsMissing() throws Exception {
         //TODO this is an IT, need to move it in IT Test
+        //GIVEN a field is missing in the body
         String body = "{ \"lastName\":\"Test\", \"address\":\"Test\", \"city\":\"Test\", \"zip\":\"Test\", \"phone\":\"Test\", \"email\":\"Test@test\" }";
         when(personService.add(any(Person.class))).thenReturn(true);
 
@@ -76,7 +76,7 @@ public class PersonControllerTest {
 
         MockHttpServletResponse response = result.getResponse();
 
-        //THEN the person is created on the correct address
+        //THEN we get a response BAD_REQUEST
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
     }
 

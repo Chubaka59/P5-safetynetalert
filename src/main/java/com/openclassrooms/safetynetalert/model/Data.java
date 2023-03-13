@@ -5,7 +5,7 @@ import java.util.List;
 @lombok.Data
 public class Data {
 
-    List<Person> persons;
-    List<FireStation> fireStations;
-    List<MedicalRecord> medicalRecords;
+    private List<Person> persons;
+    private List<FireStation> firestations;
+    private List<MedicalRecord> medicalrecords;
 }

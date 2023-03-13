@@ -1,20 +1,27 @@
 package com.openclassrooms.safetynetalert.model;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class MedicalRecord {
     @Null(groups = OnUpdate.class)
     @NotBlank
-    String firstName;
+    private String firstName;
     @Null(groups = OnUpdate.class)
     @NotBlank
-    String lastName;
+    private String lastName;
     @NotBlank(groups = OnUpdate.class)
     @NotBlank
-    String birthdate;
-    String[] medications;
-    String[] allergies;
+    private String birthdate;
+    @NotNull(groups = OnUpdate.class)
+    @NotNull
+    private List<String> medications;
+    @NotNull(groups = OnUpdate.class)
+    @NotNull
+    private List<String> allergies;
 }

@@ -5,7 +5,6 @@ import com.openclassrooms.safetynetalert.repository.MedicalRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -53,7 +52,7 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
                 .stream().anyMatch(m -> m.getFirstName().equals(medicalRecord.getFirstName()) &&
                         m.getLastName().equals(medicalRecord.getLastName()) &&
                         m.getBirthdate().equals(medicalRecord.getBirthdate()) &&
-                        Arrays.equals(m.getMedications(), medicalRecord.getMedications()) &&
-                        Arrays.equals(m.getAllergies(), medicalRecord.getAllergies()));
+                        m.getAllergies().equals(medicalRecord.getAllergies()) &&
+                        m.getMedications().equals(medicalRecord.getMedications()));
     }
 }

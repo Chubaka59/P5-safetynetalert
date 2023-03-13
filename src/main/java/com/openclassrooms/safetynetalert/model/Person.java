@@ -9,24 +9,24 @@ import lombok.Data;
 public class Person {
     @Null(groups = OnUpdate.class)
     @NotBlank
-    String firstName;
+    private String firstName;
     @Null(groups = OnUpdate.class)
     @NotBlank
-    String lastName;
+    private String lastName;
     @NotBlank
     @NotBlank(groups = OnUpdate.class)
-    String address;
+    private String address;
     @NotBlank
     @NotBlank(groups = OnUpdate.class)
-    String city;
+    private String city;
     @NotBlank
     @NotBlank(groups = OnUpdate.class)
-    String zip;
+    private String zip;
     @NotBlank
     @NotBlank(groups = OnUpdate.class)
-    String phone;
+    private String phone;
     @NotBlank
     @NotBlank(groups = OnUpdate.class)
     @Email
-    String email;
+    private String email;
 }

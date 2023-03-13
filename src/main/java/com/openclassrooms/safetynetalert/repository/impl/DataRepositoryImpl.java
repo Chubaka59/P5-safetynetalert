@@ -38,10 +38,10 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     public List<FireStation> getFireStations(){
-        return data.getFireStations();
+        return data.getFirestations();
     }
 
     public List<MedicalRecord> getMedicalRecords(){
-        return data.getMedicalRecords();
+        return data.getMedicalrecords();
     }
 }
