@@ -1,7 +1,9 @@
 package com.openclassrooms.safetynetalert.repository;
 
 import com.openclassrooms.safetynetalert.model.MedicalRecord;
+import com.openclassrooms.safetynetalert.model.Person;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MedicalRecordRepository {
@@ -41,4 +43,9 @@ public interface MedicalRecordRepository {
      * @return a boolean
      */
     boolean isDuplicated(MedicalRecord medicalRecord);
+
+    LocalDate getBirthdateListFromPersonList(Person person);
+    int getAge(LocalDate birthdate);
+
+
 }

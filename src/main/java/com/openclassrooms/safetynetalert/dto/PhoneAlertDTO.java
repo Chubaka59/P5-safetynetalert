@@ -3,6 +3,6 @@ package com.openclassrooms.safetynetalert.dto;
 import lombok.Data;
 
 @Data
-public class PhoneAlert {
+public class PhoneAlertDTO {
     String phone;
 }

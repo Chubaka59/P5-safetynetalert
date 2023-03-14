@@ -1,5 +1,7 @@
 package com.openclassrooms.safetynetalert.controller;
 
+import com.openclassrooms.safetynetalert.dto.FireStationDTO;
+import com.openclassrooms.safetynetalert.mapper.FireStationDTOMapper;
 import com.openclassrooms.safetynetalert.model.FireStation;
 import com.openclassrooms.safetynetalert.model.OnUpdate;
 import com.openclassrooms.safetynetalert.service.FireStationService;
@@ -20,6 +22,7 @@ import java.util.List;
 public class FireStationController {
 
     private final FireStationService fireStationService;
+    private final FireStationDTOMapper fireStationDTOMapper;
 
     @GetMapping(value = "/firestation")
     public List<FireStation> findAllFireStations(){
@@ -54,5 +57,10 @@ public class FireStationController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping (value = "/firestations")
+    public FireStationDTO getPersonsFromFireStation(@RequestParam int stationNumber){
+        return fireStationDTOMapper.getPersonsFromFireStation(stationNumber);
     }
 }

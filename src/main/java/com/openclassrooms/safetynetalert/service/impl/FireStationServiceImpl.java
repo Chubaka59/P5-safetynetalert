@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.service.impl;
 
+import com.openclassrooms.safetynetalert.dto.FireStationDTO;
 import com.openclassrooms.safetynetalert.model.FireStation;
 import com.openclassrooms.safetynetalert.repository.impl.FireStationRepositoryImpl;
 import com.openclassrooms.safetynetalert.service.FireStationService;
@@ -13,7 +14,6 @@ import java.util.List;
 public class FireStationServiceImpl  implements FireStationService {
 
     private final FireStationRepositoryImpl fireStationRepository;
-
 
     @Override
     public List<FireStation> getFireStations(){
@@ -33,5 +33,10 @@ public class FireStationServiceImpl  implements FireStationService {
     @Override
     public boolean update(FireStation fireStation, String address) {
         return fireStationRepository.update(fireStation, address);
+    }
+
+    @Override
+    public List<FireStationDTO> getPersonsFromFireStation(int stationNumber) {
+        return null;
     }
 }

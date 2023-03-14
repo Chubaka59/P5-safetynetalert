@@ -5,6 +5,7 @@ import com.openclassrooms.safetynetalert.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -26,10 +27,10 @@ public class PersonRepositoryImpl implements PersonRepository {
     }
 
     public List<Person> findByAddress(String address) {
-        return dataRepository.getPersons()
-                .stream()
-                .filter(person -> person.getAddress().equals(address))
-                .toList();
+            return dataRepository.getPersons()
+                    .stream()
+                    .filter(p -> p.getAddress().equals(address))
+                    .toList();
     }
 
     public List<String> findByAddressAndReturnPhoneNumber(String address) {
@@ -48,7 +49,8 @@ public class PersonRepositoryImpl implements PersonRepository {
     @Override
     public boolean isDuplicate(Person person) {
         return dataRepository.getPersons()
-                .stream().anyMatch(p -> p.getFirstName().equals(person.getFirstName()) &&
+                .stream()
+                .anyMatch(p -> p.getFirstName().equals(person.getFirstName()) &&
                         p.getLastName().equals(person.getLastName()) &&
                         p.getAddress().equals(person.getAddress()) &&
                         p.getCity().equals(person.getCity()) &&
@@ -74,5 +76,15 @@ public class PersonRepositoryImpl implements PersonRepository {
                     isDone.set(true);
                 });
         return isDone.get();
+    }
+
+    @Override
+    public List<Person> getPersonsFromAddressList(List<String> addresses) {
+        List<Person> personListFoundFromAddress = new ArrayList<>();
+        for(String address:addresses){
+            List<Person> personList = findByAddress(address);
+            personListFoundFromAddress.addAll(personList);
+        }
+        return personListFoundFromAddress;
     }
 }

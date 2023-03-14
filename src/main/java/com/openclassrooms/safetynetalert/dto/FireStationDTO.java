@@ -2,12 +2,11 @@ package com.openclassrooms.safetynetalert.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class FireStation {
-    String firstName;
-    String lastName;
-    String address;
-    String phone;
+public class FireStationDTO {
+    List<PersonDTO> personDTOList;
     int numberOfMinor;
     int numberOfMajor;
 }

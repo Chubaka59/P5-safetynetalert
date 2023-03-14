@@ -41,4 +41,11 @@ public interface PersonRepository {
      * @return a boolean
      */
     boolean update(Person person, String firstName, String lastName);
+
+    /**
+     * Get a personList from the provided address
+     * @param addresses list of addresses
+     * @return return a List of persons
+     */
+    List<Person> getPersonsFromAddressList(List<String> addresses);
 }

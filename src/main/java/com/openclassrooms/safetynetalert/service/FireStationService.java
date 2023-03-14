@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.service;
 
+import com.openclassrooms.safetynetalert.dto.FireStationDTO;
 import com.openclassrooms.safetynetalert.model.FireStation;
 
 import java.util.List;
@@ -34,4 +35,11 @@ public interface FireStationService {
      * @return a boolean
      */
     boolean update (FireStation fireStation, String address);
+
+    /**
+     * get a list of person(firstName, lastName, address, phone) covered by this fireStation and the number of major and minor
+     * @param stationNumber the id of the fireStation
+     * @return a list of person
+     */
+    List<FireStationDTO> getPersonsFromFireStation(int stationNumber);
 }

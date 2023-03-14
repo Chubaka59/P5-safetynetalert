@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class PersonInfo {
+public class PersonInfoDTO {
     String firstName;
     String lastName;
     String address;

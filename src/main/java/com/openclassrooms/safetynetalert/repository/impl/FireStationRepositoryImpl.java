@@ -51,4 +51,13 @@ public class FireStationRepositoryImpl implements FireStationRepository {
         return dataRepository.getFireStations()
                 .stream().anyMatch(f -> f.getAddress().equals(fireStation.getAddress()));
     }
+
+    @Override
+    public List<String> getAddressFromStationNumber(int stationNumber) {
+        return dataRepository.getFireStations()
+                .stream()
+                .filter(f -> f.getStation() == stationNumber)
+                .map(f -> f.getAddress())
+                .toList();
+    }
 }

@@ -1,15 +1,14 @@
 package com.openclassrooms.safetynetalert.dto;
 
+import com.openclassrooms.safetynetalert.model.Person;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class FloodFireStation {
+public class ChildAlertDTO {
     String firstName;
     String lastName;
-    String phone;
     int age;
-    List<String> medication;
-    List<String> allergies;
+    List<Person> otherHouseholdMembers;
 }

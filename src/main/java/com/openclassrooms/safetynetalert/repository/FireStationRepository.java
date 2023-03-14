@@ -39,4 +39,6 @@ public interface FireStationRepository {
      * @return a boolean
      */
     boolean isDuplicated(FireStation fireStation);
+
+    List<String> getAddressFromStationNumber(int stationNumber);
 }
