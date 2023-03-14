@@ -19,12 +19,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PersonController {
     private final PersonServiceImpl personService;
-    @GetMapping (value = "/persons")
+    @GetMapping (value = "/person")
     public List<Person> findAllPersons(){
         return personService.getPersons();
     }
 
-    @PostMapping (value = "/persons")
+    @PostMapping (value = "/person")
     public ResponseEntity<Person> add(@RequestBody @Validated Person person) {
         if (personService.add(person)) {
             URI location = ServletUriComponentsBuilder
@@ -38,7 +38,7 @@ public class PersonController {
         }
     }
 
-    @DeleteMapping (value = "/persons/{firstName}&{lastName}")
+    @DeleteMapping (value = "/person/{firstName}&{lastName}")
     public ResponseEntity<Person> delete(@PathVariable String firstName, @PathVariable String lastName){
         if (personService.delete(firstName, lastName)){
             return new ResponseEntity<>(HttpStatus.OK);
@@ -46,7 +46,7 @@ public class PersonController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping (value = "/persons/{firstName}&{lastName}")
+    @PutMapping (value = "/person/{firstName}&{lastName}")
     public ResponseEntity<Person> update(@RequestBody @Validated(OnUpdate.class) Person person, @PathVariable String firstName, @PathVariable String lastName){
         if (personService.update(person, firstName, lastName)){
             return new ResponseEntity<>(HttpStatus.OK);

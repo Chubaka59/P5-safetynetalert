@@ -29,7 +29,7 @@ public class PersonCRUDIT {
     @Test
     public void getTest() throws Exception {
         //WHEN we perform a get THEN the status is OK and we can find "John" in the personList
-        mockMvc.perform(get("/persons"))
+        mockMvc.perform(get("/person"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("John")));
@@ -38,7 +38,7 @@ public class PersonCRUDIT {
     @Test
     public void addTest() throws Exception {
         //GIVEN we need to add a person
-        MockHttpServletRequestBuilder requestBuilders = post("/persons")
+        MockHttpServletRequestBuilder requestBuilders = post("/person")
                 .content("""
                             {
                                 "firstName": "Joffrey",
@@ -61,7 +61,7 @@ public class PersonCRUDIT {
     @Test
     public void addWhenAFieldIsMissingTest() throws Exception {
         //GIVEN we need to add a person where a field is missing
-        MockHttpServletRequestBuilder requestBuilders = post("/persons")
+        MockHttpServletRequestBuilder requestBuilders = post("/person")
                 .content("""
                             {
                                 "firstName": "Joffrey",
@@ -83,7 +83,7 @@ public class PersonCRUDIT {
     @Test
     public void addWhenPersonAlreadyExistTest() throws Exception {
         //GIVEN we need to add a person that already exist
-        MockHttpServletRequestBuilder requestBuilders = post("/persons")
+        MockHttpServletRequestBuilder requestBuilders = post("/person")
                 .content("""
                             {
                                 "firstName": "John",
@@ -106,7 +106,7 @@ public class PersonCRUDIT {
     @Test
     public void deleteTest() throws Exception {
         //WHEN we delete a person THEN the status is OK
-        mockMvc.perform(delete("/persons/John&Boyd"))
+        mockMvc.perform(delete("/person/John&Boyd"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -114,7 +114,7 @@ public class PersonCRUDIT {
     @Test
     public void deleteNotExistingPersonTest() throws Exception {
         //WHEN we delete a person that doesn't exist THEN the status is NOT_FOUND
-        mockMvc.perform(delete("/persons/test&test"))
+        mockMvc.perform(delete("/person/test&test"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -122,7 +122,7 @@ public class PersonCRUDIT {
     @Test
     public void UpdateTest() throws Exception {
         //GIVEN we need to update a person
-        MockHttpServletRequestBuilder requestBuilders = put("/persons/John&Boyd")
+        MockHttpServletRequestBuilder requestBuilders = put("/person/John&Boyd")
                 .content("""
                             {
                                 "address": "test",
@@ -143,7 +143,7 @@ public class PersonCRUDIT {
     @Test
     public void updateNotExistingPersonTest() throws Exception {
         //GIVEN we will update a person that doesn't exist
-        MockHttpServletRequestBuilder requestBuilders = put("/persons/test&test")
+        MockHttpServletRequestBuilder requestBuilders = put("/person/test&test")
                 .content("""
                             {
                                 "address": "test",
@@ -164,7 +164,7 @@ public class PersonCRUDIT {
     @Test
     public void updateWhenAFieldIsMissingTest() throws Exception {
         //GIVEN we will try to update a person where a field is missing
-        MockHttpServletRequestBuilder requestBuilders = put("/persons/John&Boyd")
+        MockHttpServletRequestBuilder requestBuilders = put("/person/John&Boyd")
                 .content("""
                             {
                                 "city": "test",

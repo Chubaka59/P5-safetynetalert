@@ -23,7 +23,7 @@ public class MedicalRecordCRUDIT {
     @Test
     public void getTest() throws Exception {
         //WHEN we perform a get THEN the status is OK and we can find "John" in the medicalRecordList
-        mockMvc.perform(get("/medicalrecords"))
+        mockMvc.perform(get("/medicalrecord"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("John")));
@@ -32,7 +32,7 @@ public class MedicalRecordCRUDIT {
     @Test
     public void addTest() throws Exception {
         //GIVEN we need to add a medicalRecord
-        MockHttpServletRequestBuilder requestBuilders = post("/medicalrecords")
+        MockHttpServletRequestBuilder requestBuilders = post("/medicalrecord")
                 .content("""
                             {
                                 "firstName": "Joffrey",
@@ -53,7 +53,7 @@ public class MedicalRecordCRUDIT {
     @Test
     public void addWhenAFieldIsMissingTest() throws Exception {
         //GIVEN we need to add a medicalRecord where a field is missing
-        MockHttpServletRequestBuilder requestBuilders = post("/medicalrecords")
+        MockHttpServletRequestBuilder requestBuilders = post("/medicalrecord")
                 .content("""
                             {
                                 "firstName": "Joffrey",
@@ -73,7 +73,7 @@ public class MedicalRecordCRUDIT {
     @Test
     public void addWhenMedicalRecordAlreadyExistTest() throws Exception {
         //GIVEN we need to add a medicalRecord that already exist
-        MockHttpServletRequestBuilder requestBuilders = post("/medicalrecords")
+        MockHttpServletRequestBuilder requestBuilders = post("/medicalrecord")
                 .content("""
                             {
                                 "firstName": "John",
@@ -99,7 +99,7 @@ public class MedicalRecordCRUDIT {
     @Test
     public void deleteTest() throws Exception {
         //WHEN we delete a medicalRecord THEN the status is OK
-        mockMvc.perform(delete("/medicalrecords/John&Boyd"))
+        mockMvc.perform(delete("/medicalrecord/John&Boyd"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -107,7 +107,7 @@ public class MedicalRecordCRUDIT {
     @Test
     public void deleteNotExistingMedicalRecordTest() throws Exception {
         //WHEN we delete a medicalRecord that doesn't exist THEN the status is NOT_FOUND
-        mockMvc.perform(delete("/medicalrecords/test&test"))
+        mockMvc.perform(delete("/medicalrecord/test&test"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -115,7 +115,7 @@ public class MedicalRecordCRUDIT {
     @Test
     public void UpdateTest() throws Exception {
         //GIVEN we need to update a medicalRecord
-        MockHttpServletRequestBuilder requestBuilders = put("/medicalrecords/John&Boyd")
+        MockHttpServletRequestBuilder requestBuilders = put("/medicalrecord/John&Boyd")
                 .content("""
                             {
                                 "birthdate":"03/06/1984",
@@ -139,7 +139,7 @@ public class MedicalRecordCRUDIT {
     @Test
     public void updateNotExistingMedicalRecordTest() throws Exception {
         //GIVEN we will update a medicalRecord that doesn't exist
-        MockHttpServletRequestBuilder requestBuilders = put("/medicalrecords/test&test")
+        MockHttpServletRequestBuilder requestBuilders = put("/medicalrecord/test&test")
                 .content("""
                             {
                                 "birthdate":"03/06/1984",
@@ -163,7 +163,7 @@ public class MedicalRecordCRUDIT {
     @Test
     public void updateWhenAFieldIsMissingTest() throws Exception {
         //GIVEN we will try to update a person where a field is missing
-        MockHttpServletRequestBuilder requestBuilders = put("/medicalrecords/John&Boyd")
+        MockHttpServletRequestBuilder requestBuilders = put("/medicalrecord/John&Boyd")
                 .content("""
                             {
                                 "medications":[

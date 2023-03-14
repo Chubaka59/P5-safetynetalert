@@ -21,12 +21,12 @@ public class FireStationController {
 
     private final FireStationService fireStationService;
 
-    @GetMapping(value = "/firestations")
+    @GetMapping(value = "/firestation")
     public List<FireStation> findAllFireStations(){
         return fireStationService.getFireStations();
     }
 
-    @PostMapping (value = "/firestations")
+    @PostMapping (value = "/firestation")
     public ResponseEntity<FireStation> add(@RequestBody @Validated FireStation fireStation){
         if (fireStationService.add(fireStation)) {
             URI location = ServletUriComponentsBuilder
@@ -40,7 +40,7 @@ public class FireStationController {
         }
     }
 
-    @DeleteMapping (value = "/firestations/{address}")
+    @DeleteMapping (value = "/firestation/{address}")
     public ResponseEntity<FireStation> delete(@PathVariable String address){
         if (fireStationService.delete(address)) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -48,7 +48,7 @@ public class FireStationController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping (value = "/firestations/{address}")
+    @PutMapping (value = "/firestation/{address}")
     public ResponseEntity<FireStation> update(@RequestBody @Validated(OnUpdate.class) FireStation fireStation, @PathVariable String address){
         if (fireStationService.update(fireStation, address)) {
             return new ResponseEntity<>(HttpStatus.OK);

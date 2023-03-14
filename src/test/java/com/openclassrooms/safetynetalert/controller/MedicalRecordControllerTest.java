@@ -8,13 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -57,27 +52,6 @@ public class MedicalRecordControllerTest {
         //THEN the medicalRecord is created
         then(medicalRecordService).should().add(any(MedicalRecord.class));
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    }
-
-    @Test
-    public void addWhenAFieldIsMissing() throws Exception{
-        //TODO this is an IT, need to move it in IT Test
-        //GIVEN a field is missing in the body
-        String body = "{ \"lastName\":\"Test\", \"birthdate\":\"03/06/1984\", \"medications\":[\"aznol:350mg\", \"hydrapermazol:100mg\"], \"allergies\":[\"nillacilan\"] }";
-        when(medicalRecordService.add(any(MedicalRecord.class))).thenReturn(true);
-
-        //WHEN we post a new medicalRecord
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/medicalrecords")
-                .accept(MediaType.APPLICATION_JSON).content(body)
-                .contentType(MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-
-        MockHttpServletResponse response = result.getResponse();
-
-        //THEN we get a response BAD_REQUEST
-        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
     }
 
     @Test

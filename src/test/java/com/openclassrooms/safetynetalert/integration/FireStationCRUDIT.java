@@ -23,7 +23,7 @@ public class FireStationCRUDIT {
     @Test
     public void getTest() throws Exception {
         //WHEN we perform a get THEN the status is OK and we can find an address
-        mockMvc.perform(get("/firestations"))
+        mockMvc.perform(get("/firestation"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("1509 Culver St")));
@@ -32,7 +32,7 @@ public class FireStationCRUDIT {
     @Test
     public void addTest() throws Exception {
         //GIVEN we need to add a fireStation
-        MockHttpServletRequestBuilder requestBuilders = post("/firestations")
+        MockHttpServletRequestBuilder requestBuilders = post("/firestation")
                 .content("""
                             {
                                 "address":"1 Test St",
@@ -50,7 +50,7 @@ public class FireStationCRUDIT {
     @Test
     public void addWhenAFieldIsMissingTest() throws Exception {
         //GIVEN we need to add a fireStation where a field is missing
-        MockHttpServletRequestBuilder requestBuilders = post("/firestations")
+        MockHttpServletRequestBuilder requestBuilders = post("/firestation")
                 .content("""
                             {
                                 "station":"3"
@@ -67,7 +67,7 @@ public class FireStationCRUDIT {
     @Test
     public void addWhenFireStationAlreadyExistTest() throws Exception{
         //GIVEN we need to add a fireStation that already exist
-        MockHttpServletRequestBuilder requestBuilders = post("/firestations")
+        MockHttpServletRequestBuilder requestBuilders = post("/firestation")
                 .content("""
                             {
                                 "address":"1509 Culver St",
@@ -85,7 +85,7 @@ public class FireStationCRUDIT {
     @Test
     public void deleteTest() throws Exception{
         //WHEN we delete a fireStation THEN the status is OK
-        mockMvc.perform(delete("/firestations/1509 Culver St"))
+        mockMvc.perform(delete("/firestation/1509 Culver St"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -93,7 +93,7 @@ public class FireStationCRUDIT {
     @Test
     public void deleteNotExistingFireStationTest() throws Exception {
         //WHEN we delete a fireStation that doesn't exist THEN the status is NOT_FOUND
-        mockMvc.perform(delete("/persons/test"))
+        mockMvc.perform(delete("/firestation/test"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -101,7 +101,7 @@ public class FireStationCRUDIT {
     @Test
     public void updateTest() throws Exception {
         //GIVEN we need to update a fireStation
-        MockHttpServletRequestBuilder requestBuilders = put("/firestations/1509 Culver St")
+        MockHttpServletRequestBuilder requestBuilders = put("/firestation/1509 Culver St")
                 .content("""
                             {
                                 "station":"2"
@@ -118,7 +118,7 @@ public class FireStationCRUDIT {
     @Test
     public void updateNotExistingFireStationTest() throws Exception{
         //GIVEN we will update a fireStation that doesn't exist
-        MockHttpServletRequestBuilder requestBuilders = put("/firestations/test")
+        MockHttpServletRequestBuilder requestBuilders = put("/firestation/test")
                 .content("""
                             {
                                 "station":"3"
@@ -135,7 +135,7 @@ public class FireStationCRUDIT {
     @Test
     public void updateWhenAFieldIsMissingTest() throws Exception{
         //GIVEN we will try to update a fireStation where a field is missing
-        MockHttpServletRequestBuilder requestBuilders = put("/firestations/1509 Culver St")
+        MockHttpServletRequestBuilder requestBuilders = put("/firestation/1509 Culver St")
                 .content("""
                             {
 
