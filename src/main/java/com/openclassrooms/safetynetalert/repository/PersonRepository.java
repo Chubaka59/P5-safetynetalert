@@ -3,6 +3,7 @@ package com.openclassrooms.safetynetalert.repository;
 import com.openclassrooms.safetynetalert.model.Person;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonRepository {
     /**
@@ -48,4 +49,7 @@ public interface PersonRepository {
      * @return return a List of persons
      */
     List<Person> getPersonsFromAddressList(List<String> addresses);
+
+
+    Person update(Person person, UpdatePersonDTO personDTO);
 }

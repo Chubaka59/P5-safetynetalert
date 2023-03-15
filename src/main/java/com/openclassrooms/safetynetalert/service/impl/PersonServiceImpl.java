@@ -29,7 +29,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public boolean update(Person person, String firstName, String lastName) {
-        return personRepository.update(person, firstName, lastName);
+    public Person update(UpdatePersonDTO personDTO, String firstName, String lastName) {
+        Person person = personRepository.getPerson(firstName, lastName)
+                .orElseThrow(() -> new PersonNotFoundException(firstName, lastName));
+        return personRepository.update(person, personDTO);
     }
 }

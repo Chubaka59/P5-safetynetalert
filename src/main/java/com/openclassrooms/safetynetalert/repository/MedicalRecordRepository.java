@@ -5,6 +5,7 @@ import com.openclassrooms.safetynetalert.model.Person;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface MedicalRecordRepository {
     /**
@@ -46,6 +47,4 @@ public interface MedicalRecordRepository {
 
     LocalDate getBirthdateListFromPersonList(Person person);
     int getAge(LocalDate birthdate);
-
-
 }

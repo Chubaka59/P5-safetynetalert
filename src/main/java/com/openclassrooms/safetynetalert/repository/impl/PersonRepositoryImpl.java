@@ -1,18 +1,19 @@
 package com.openclassrooms.safetynetalert.repository.impl;
 
 import com.openclassrooms.safetynetalert.model.Person;
+import com.openclassrooms.safetynetalert.repository.DataRepository;
 import com.openclassrooms.safetynetalert.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class PersonRepositoryImpl implements PersonRepository {
-    private final DataRepositoryImpl dataRepository;
+    private final DataRepository dataRepository;
 
     @Override
     public List<Person> getAllPersons() {
@@ -76,6 +77,16 @@ public class PersonRepositoryImpl implements PersonRepository {
                     isDone.set(true);
                 });
         return isDone.get();
+    }
+
+    @Override
+    public Person update(Person person, UpdatePersonDTO personDTO){
+        dataRepository.getPersons()
+                .stream()
+                .filter(p -> p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName()))
+                .findFirst()
+                .ifPresent(p -> p.update(personDTO));
+        return getPerson(person.getFirstName(), person.getLastName()).orElseThrow();
     }
 
     @Override

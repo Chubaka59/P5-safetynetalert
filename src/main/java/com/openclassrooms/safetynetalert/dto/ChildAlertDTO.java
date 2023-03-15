@@ -9,6 +9,6 @@ import java.util.List;
 public class ChildAlertDTO {
     String firstName;
     String lastName;
-    int age;
+    Integer age;
     List<Person> otherHouseholdMembers;
 }

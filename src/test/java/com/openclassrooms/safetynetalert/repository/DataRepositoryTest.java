@@ -25,7 +25,7 @@ public class DataRepositoryTest {
 
     @Autowired
     DataRepositoryImpl dataRepositoryImpl;
-    @Mock
+    @Autowired
     private ObjectMapper objectMapper;
 
     private Data data = new Data();

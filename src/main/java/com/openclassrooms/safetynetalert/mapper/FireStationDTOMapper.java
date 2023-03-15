@@ -22,32 +22,22 @@ public class FireStationDTOMapper {
 
 
     public FireStationDTO getPersonsFromFireStation(int stationNumber) {
-        List<PersonDTO> personDTOList = new ArrayList<>();
-        PersonDTO personDTO = new PersonDTO();
-        FireStationDTO fireStationDTO = new FireStationDTO();
-        int major = 0;
-        int minor = 0;
         List<String> addresses = fireStationRepository.getAddressFromStationNumber(stationNumber);
-        List<Person> personListFoundFromAddress = personRepository.getPersonsFromAddressList(addresses);
+        List<PersonDTO> personDTOList = personRepository.getPersonsFromAddressList(addresses)
+                .stream()
+                .map(PersonDTO::new)
+                .toList();
 
-        for (Person person:personListFoundFromAddress) {
-            personDTO.setFirstName(person.getFirstName());
-            personDTO.setLastName(person.getLastName());
-            personDTO.setAddress(person.getAddress() + " " + person.getZip() + " " + person.getCity());
-            personDTO.setPhone(person.getPhone());
-            personDTOList.add(personDTO);
 
-            LocalDate birthdate = medicalRecordRepository.getBirthdateListFromPersonList(person);
-            if (medicalRecordRepository.getAge(birthdate) >= 18) {
-                major += 1;
-            } else {
-                minor += 1;
-            }
-        }
-        fireStationDTO.setPersonDTOList(personDTOList);
-        fireStationDTO.setNumberOfMajor(major);
-        fireStationDTO.setNumberOfMinor(minor);
-        return fireStationDTO;
+        Long numberOfMinor = personDTOList
+                .stream()
+                .filter(p -> medicalRecordRepository.getMedicalRecord(p.getFirstName(), p.getFirstName())
+                            .orElseThrow()
+                            .isMinor())
+                .count();
+
+
+        return new FireStationDTO(personDTOList, numberOfMinor );
     }
 
 

@@ -29,4 +29,25 @@ public class Person {
     @NotBlank(groups = OnUpdate.class)
     @Email
     private String email;
+
+
+    public Person update(UpdatePersonDTO personDTO){
+        this.setAddress(personDTO.getAddress());
+        this.setCity(personDTO.getCity());
+        this.setZip(personDTO.getZip());
+        this.setPhone(personDTO.getPhone());
+        this.setEmail(personDTO.getEmail());
+        return this;
+    }
+
+    public Person create(CreatePersonDTO personDTO){
+        this.setFirstName(personDTO.getFirstName());
+        this.setLastName(personDTO.getLastName());
+        this.setAddress(personDTO.getAddress());
+        this.setCity(personDTO.getCity());
+        this.setZip(personDTO.getZip());
+        this.setPhone(personDTO.getPhone());
+        this.setEmail(personDTO.getEmail());
+        return this;
+    }
 }

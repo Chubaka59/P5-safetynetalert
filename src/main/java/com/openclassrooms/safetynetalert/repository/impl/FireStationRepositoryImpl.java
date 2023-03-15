@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @RequiredArgsConstructor
 public class FireStationRepositoryImpl implements FireStationRepository {
 
-    private final DataRepositoryImpl dataRepository;
+    private final DataRepository dataRepository;
 
 
     @Override

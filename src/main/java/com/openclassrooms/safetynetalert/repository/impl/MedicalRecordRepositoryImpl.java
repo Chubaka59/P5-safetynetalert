@@ -2,6 +2,7 @@ package com.openclassrooms.safetynetalert.repository.impl;
 
 import com.openclassrooms.safetynetalert.model.MedicalRecord;
 import com.openclassrooms.safetynetalert.model.Person;
+import com.openclassrooms.safetynetalert.repository.DataRepository;
 import com.openclassrooms.safetynetalert.repository.MedicalRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -10,12 +11,12 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
-    private final DataRepositoryImpl dataRepository;
+    private final DataRepository dataRepository;
 
     @Override
     public List<MedicalRecord> getAllMedicalRecords(){
