@@ -6,7 +6,7 @@ import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationAlreadyExistException;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationNotFoundException;
 import com.openclassrooms.safetynetalert.model.FireStation;
-import com.openclassrooms.safetynetalert.repository.impl.FireStationRepositoryImpl;
+import com.openclassrooms.safetynetalert.repository.FireStationRepository;
 import com.openclassrooms.safetynetalert.service.FireStationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FireStationServiceImpl  implements FireStationService {
 
-    private final FireStationRepositoryImpl fireStationRepository;
+    private final FireStationRepository fireStationRepository;
 
     @Override
     public List<FireStation> getFireStations(){

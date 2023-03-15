@@ -3,7 +3,7 @@ package com.openclassrooms.safetynetalert.controller;
 import com.openclassrooms.safetynetalert.dto.medicalrecord.CreateMedicalRecordDTO;
 import com.openclassrooms.safetynetalert.dto.medicalrecord.UpdateMedicalRecordDTO;
 import com.openclassrooms.safetynetalert.model.MedicalRecord;
-import com.openclassrooms.safetynetalert.service.impl.MedicalRecordServiceImpl;
+import com.openclassrooms.safetynetalert.service.MedicalRecordService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class MedicalRecordController {
-    private final MedicalRecordServiceImpl medicalRecordService;
+    private final MedicalRecordService medicalRecordService;
 
     @GetMapping(value = "/medicalrecord")
     public List<MedicalRecord> findAllMedicalRecords() {

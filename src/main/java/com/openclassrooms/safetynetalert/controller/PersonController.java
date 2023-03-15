@@ -3,7 +3,7 @@ package com.openclassrooms.safetynetalert.controller;
 import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
 import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
 import com.openclassrooms.safetynetalert.model.Person;
-import com.openclassrooms.safetynetalert.service.impl.PersonServiceImpl;
+import com.openclassrooms.safetynetalert.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class PersonController {
-    private final PersonServiceImpl personService;
+    private final PersonService personService;
     @GetMapping (value = "/person")
     public List<Person> findAllPersons(){
         return personService.getPersons();

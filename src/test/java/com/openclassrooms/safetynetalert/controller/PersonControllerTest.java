@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.controller;
 
+import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
 import com.openclassrooms.safetynetalert.model.Person;
 import com.openclassrooms.safetynetalert.service.impl.PersonServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +45,7 @@ public class PersonControllerTest {
     @Test
     public void addTest() throws Exception {
         //GIVEN we need to add a person
-        given(personService.add(any(Person.class))).willReturn(true);
+        given(personService.add(any(CreatePersonDTO.class))).willReturn(any());
 
         //WHEN we post a new person
         ResponseEntity<Person> response = personController.add(person);

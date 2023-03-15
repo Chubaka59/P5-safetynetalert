@@ -2,7 +2,6 @@ package com.openclassrooms.safetynetalert.controller;
 
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
-import com.openclassrooms.safetynetalert.mapper.FireStationDTOMapper;
 import com.openclassrooms.safetynetalert.model.FireStation;
 import com.openclassrooms.safetynetalert.service.FireStationService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ import java.util.List;
 public class FireStationController {
 
     private final FireStationService fireStationService;
-    private final FireStationDTOMapper fireStationDTOMapper;
 
     @GetMapping(value = "/firestation")
     public List<FireStation> findAllFireStations(){

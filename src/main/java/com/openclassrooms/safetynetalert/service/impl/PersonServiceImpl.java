@@ -5,7 +5,7 @@ import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
 import com.openclassrooms.safetynetalert.exception.person.PersonAlreadyExistException;
 import com.openclassrooms.safetynetalert.exception.person.PersonNotFoundException;
 import com.openclassrooms.safetynetalert.model.Person;
-import com.openclassrooms.safetynetalert.repository.impl.PersonRepositoryImpl;
+import com.openclassrooms.safetynetalert.repository.PersonRepository;
 import com.openclassrooms.safetynetalert.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
-    private final PersonRepositoryImpl personRepository;
+    private final PersonRepository personRepository;
 
     @Override
     public List<Person> getPersons(){

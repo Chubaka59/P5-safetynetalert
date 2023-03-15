@@ -5,7 +5,7 @@ import com.openclassrooms.safetynetalert.dto.medicalrecord.UpdateMedicalRecordDT
 import com.openclassrooms.safetynetalert.exception.medicalrecord.MedicalRecordAlreadyExistException;
 import com.openclassrooms.safetynetalert.exception.medicalrecord.MedicalRecordNotFoundException;
 import com.openclassrooms.safetynetalert.model.MedicalRecord;
-import com.openclassrooms.safetynetalert.repository.impl.MedicalRecordRepositoryImpl;
+import com.openclassrooms.safetynetalert.repository.MedicalRecordRepository;
 import com.openclassrooms.safetynetalert.service.MedicalRecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MedicalRecordServiceImpl implements MedicalRecordService {
-    private final MedicalRecordRepositoryImpl medicalRecordRepository;
+    private final MedicalRecordRepository medicalRecordRepository;
 
     @Override
     public List<MedicalRecord> getMedicalRecords(){
