@@ -1,5 +1,9 @@
 package com.openclassrooms.safetynetalert.service.impl;
 
+import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
+import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
+import com.openclassrooms.safetynetalert.exception.person.PersonAlreadyExistException;
+import com.openclassrooms.safetynetalert.exception.person.PersonNotFoundException;
 import com.openclassrooms.safetynetalert.model.Person;
 import com.openclassrooms.safetynetalert.repository.impl.PersonRepositoryImpl;
 import com.openclassrooms.safetynetalert.service.PersonService;
@@ -19,13 +23,17 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public boolean add(Person person) {
-        return personRepository.add(person);
+    public Person add(CreatePersonDTO personDTO) {
+        if(personRepository.getPerson(personDTO.getFirstName(), personDTO.getLastName()).isPresent())
+            throw new PersonAlreadyExistException(personDTO.getFirstName(), personDTO.getLastName());
+        return personRepository.add(personDTO);
     }
 
     @Override
-    public boolean delete(String firstName, String lastName) {
-        return personRepository.delete(firstName, lastName);
+    public Person delete(String firstName, String lastName) {
+        Person person = personRepository.getPerson(firstName, lastName)
+                .orElseThrow(() -> new PersonNotFoundException(firstName, lastName));
+        return personRepository.delete(person);
     }
 
     @Override

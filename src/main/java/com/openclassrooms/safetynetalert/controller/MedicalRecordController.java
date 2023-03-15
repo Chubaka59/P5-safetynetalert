@@ -1,7 +1,8 @@
 package com.openclassrooms.safetynetalert.controller;
 
+import com.openclassrooms.safetynetalert.dto.medicalrecord.CreateMedicalRecordDTO;
+import com.openclassrooms.safetynetalert.dto.medicalrecord.UpdateMedicalRecordDTO;
 import com.openclassrooms.safetynetalert.model.MedicalRecord;
-import com.openclassrooms.safetynetalert.model.OnUpdate;
 import com.openclassrooms.safetynetalert.service.impl.MedicalRecordServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,37 +22,44 @@ public class MedicalRecordController {
     private final MedicalRecordServiceImpl medicalRecordService;
 
     @GetMapping(value = "/medicalrecord")
-    public List<MedicalRecord> findAllMedicalRecords(){
+    public List<MedicalRecord> findAllMedicalRecords() {
         return medicalRecordService.getMedicalRecords();
     }
 
-    @PostMapping (value = "/medicalrecord")
-    public ResponseEntity<MedicalRecord> add(@RequestBody @Validated MedicalRecord medicalRecord){
-        if(medicalRecordService.add(medicalRecord)){
+    @PostMapping(value = "/medicalrecord")
+    public ResponseEntity<MedicalRecord> add(@RequestBody @Validated CreateMedicalRecordDTO medicalRecordDTO) {
+        try {
+            medicalRecordService.add(medicalRecordDTO);
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .build()
                     .toUri();
             return ResponseEntity.created(location).build();
-        } else {
-            log.error("MedicalRecord already exist");
+        } catch (Exception e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
     @DeleteMapping(value = "/medicalrecord/{firstName}&{lastName}")
-    public ResponseEntity<MedicalRecord> delete(@PathVariable String firstName, @PathVariable String lastName){
-        if(medicalRecordService.delete(firstName, lastName)){
+    public ResponseEntity<MedicalRecord> delete(@PathVariable String firstName, @PathVariable String lastName) {
+        try {
+            medicalRecordService.delete(firstName, lastName);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping (value = "/medicalrecord/{firstName}&{lastName}")
-    public ResponseEntity<MedicalRecord> update(@RequestBody @Validated(OnUpdate.class) MedicalRecord medicalRecord, @PathVariable String firstName, @PathVariable String lastName){
-        if (medicalRecordService.update(medicalRecord, firstName, lastName)){
+    @PutMapping(value = "/medicalrecord/{firstName}&{lastName}")
+    public ResponseEntity<MedicalRecord> update(@RequestBody @Validated UpdateMedicalRecordDTO medicalRecordDTO, @PathVariable String firstName, @PathVariable String lastName) {
+        try {
+            medicalRecordService.update(medicalRecordDTO, firstName, lastName);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

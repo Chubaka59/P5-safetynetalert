@@ -1,5 +1,7 @@
 package com.openclassrooms.safetynetalert.repository.impl;
 
+import com.openclassrooms.safetynetalert.dto.medicalrecord.CreateMedicalRecordDTO;
+import com.openclassrooms.safetynetalert.dto.medicalrecord.UpdateMedicalRecordDTO;
 import com.openclassrooms.safetynetalert.model.MedicalRecord;
 import com.openclassrooms.safetynetalert.model.Person;
 import com.openclassrooms.safetynetalert.repository.DataRepository;
@@ -23,42 +25,34 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
         return dataRepository.getMedicalRecords();
     }
 
-    @Override
-    public boolean add(MedicalRecord medicalRecord) {
-        if (!isDuplicated(medicalRecord))
-            return dataRepository.getMedicalRecords().add(medicalRecord);
-        return false;
+    public Optional<MedicalRecord> getMedicalRecord(String firstname, String lastname) {
+        return dataRepository.getMedicalRecords()
+                .stream()
+                .filter(p -> p.getFirstName().equals(firstname))
+                .filter(p -> p.getLastName().equals(lastname))
+                .findFirst();
     }
 
     @Override
-    public boolean delete(String firstName, String lastName) {
-        return dataRepository.getMedicalRecords().removeIf(m -> m.getFirstName().equals(firstName) && m.getLastName().equals(lastName));
+    public MedicalRecord add(CreateMedicalRecordDTO medicalRecordDTO) {
+        dataRepository.getMedicalRecords().add(new MedicalRecord().create(medicalRecordDTO));
+            return getMedicalRecord(medicalRecordDTO.getFirstName(), medicalRecordDTO.getLastName()).orElseThrow();
     }
 
     @Override
-    public boolean update(MedicalRecord medicalRecord, String firstName, String lastName) {
-        AtomicBoolean isDone = new AtomicBoolean(false);
+    public MedicalRecord delete(MedicalRecord medicalRecord) {
+        dataRepository.getMedicalRecords().removeIf(m -> m.getFirstName().equals(medicalRecord.getFirstName()) && m.getLastName().equals(medicalRecord.getLastName()));
+        return medicalRecord;
+    }
+
+    @Override
+    public MedicalRecord update(MedicalRecord medicalRecord, UpdateMedicalRecordDTO medicalRecordDTO) {
         dataRepository.getMedicalRecords()
                 .stream()
-                .filter(i -> i.getLastName().equals(lastName) && i.getFirstName().equals(firstName))
+                .filter(m -> m.getFirstName().equals(medicalRecord.getFirstName()) && m.getLastName().equals(medicalRecord.getLastName()))
                 .findFirst()
-                .ifPresent(m -> {
-                    m.setBirthdate(medicalRecord.getBirthdate());
-                    m.setMedications(medicalRecord.getMedications());
-                    m.setAllergies(medicalRecord.getAllergies());
-                    isDone.set(true);
-                });
-        return isDone.get();
-    }
-
-    @Override
-    public boolean isDuplicated(MedicalRecord medicalRecord) {
-        return dataRepository.getMedicalRecords()
-                .stream().anyMatch(m -> m.getFirstName().equals(medicalRecord.getFirstName()) &&
-                        m.getLastName().equals(medicalRecord.getLastName()) &&
-                        m.getBirthdate().equals(medicalRecord.getBirthdate()) &&
-                        m.getAllergies().equals(medicalRecord.getAllergies()) &&
-                        m.getMedications().equals(medicalRecord.getMedications()));
+                .ifPresent(m -> m.update(medicalRecordDTO));
+        return getMedicalRecord(medicalRecord.getFirstName(), medicalRecord.getLastName()).orElseThrow();
     }
 
     @Override

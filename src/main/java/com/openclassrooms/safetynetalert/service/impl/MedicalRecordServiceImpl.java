@@ -1,5 +1,9 @@
 package com.openclassrooms.safetynetalert.service.impl;
 
+import com.openclassrooms.safetynetalert.dto.medicalrecord.CreateMedicalRecordDTO;
+import com.openclassrooms.safetynetalert.dto.medicalrecord.UpdateMedicalRecordDTO;
+import com.openclassrooms.safetynetalert.exception.medicalrecord.MedicalRecordAlreadyExistException;
+import com.openclassrooms.safetynetalert.exception.medicalrecord.MedicalRecordNotFoundException;
 import com.openclassrooms.safetynetalert.model.MedicalRecord;
 import com.openclassrooms.safetynetalert.repository.impl.MedicalRecordRepositoryImpl;
 import com.openclassrooms.safetynetalert.service.MedicalRecordService;
@@ -19,17 +23,23 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     @Override
-    public boolean add(MedicalRecord medicalRecord) {
-        return medicalRecordRepository.add(medicalRecord);
+    public MedicalRecord add(CreateMedicalRecordDTO medicalRecordDTO) {
+        if (medicalRecordRepository.getMedicalRecord(medicalRecordDTO.getFirstName(), medicalRecordDTO.getLastName()).isPresent())
+            throw new MedicalRecordAlreadyExistException(medicalRecordDTO.getFirstName(), medicalRecordDTO.getLastName());
+        return medicalRecordRepository.add(medicalRecordDTO);
     }
 
     @Override
-    public boolean delete(String firstName, String lastName) {
-        return medicalRecordRepository.delete(firstName, lastName);
+    public MedicalRecord delete(String firstName, String lastName) {
+        MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecord(firstName, lastName)
+                .orElseThrow(() -> new MedicalRecordNotFoundException(firstName, lastName));
+        return medicalRecordRepository.delete(medicalRecord);
     }
 
     @Override
-    public boolean update(MedicalRecord medicalRecord, String firstName, String lastName) {
-        return medicalRecordRepository.update(medicalRecord, firstName, lastName);
+    public MedicalRecord update(UpdateMedicalRecordDTO medicalRecordDTO, String firstName, String lastName) {
+        MedicalRecord medicalRecord = medicalRecordRepository.getMedicalRecord(firstName, lastName)
+                .orElseThrow(() -> new MedicalRecordNotFoundException(firstName, lastName));
+        return medicalRecordRepository.update(medicalRecord, medicalRecordDTO);
     }
 }

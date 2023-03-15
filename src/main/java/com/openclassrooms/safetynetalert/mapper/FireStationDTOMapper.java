@@ -2,15 +2,12 @@ package com.openclassrooms.safetynetalert.mapper;
 
 import com.openclassrooms.safetynetalert.dto.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.PersonDTO;
-import com.openclassrooms.safetynetalert.model.Person;
 import com.openclassrooms.safetynetalert.repository.impl.FireStationRepositoryImpl;
 import com.openclassrooms.safetynetalert.repository.impl.MedicalRecordRepositoryImpl;
 import com.openclassrooms.safetynetalert.repository.impl.PersonRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

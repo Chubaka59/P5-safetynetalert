@@ -26,13 +26,13 @@ public class FireStationServiceTest {
     public void getFireStationTest(){
         //GIVEN a list should be returned
         List<FireStation> fireStationList = new ArrayList<>();
-        when(fireStationRepository.getAllFireStation()).thenReturn(fireStationList);
+        when(fireStationRepository.getAllFireStations()).thenReturn(fireStationList);
 
         //WHEN the method is called
         fireStationService.getFireStations();
 
         //THEN fireStationRepository.getAllFireStation is called 1 time
-        verify(fireStationRepository, times(1)).getAllFireStation();
+        verify(fireStationRepository, times(1)).getAllFireStations();
     }
 
     @Test

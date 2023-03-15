@@ -5,7 +5,6 @@ import com.openclassrooms.safetynetalert.dto.medicalrecord.CreateMedicalRecordDT
 import com.openclassrooms.safetynetalert.dto.medicalrecord.UpdateMedicalRecordDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -14,7 +13,6 @@ import java.util.List;
 
 @Data
 public class MedicalRecord {
-    @Null(groups = OnUpdate.class)
     @NotBlank
     private String firstName;
 

@@ -1,6 +1,7 @@
 package com.openclassrooms.safetynetalert.controller;
 
-import com.openclassrooms.safetynetalert.dto.FireStationDTO;
+import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
+import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
 import com.openclassrooms.safetynetalert.mapper.FireStationDTOMapper;
 import com.openclassrooms.safetynetalert.model.FireStation;
 import com.openclassrooms.safetynetalert.service.FireStationService;
@@ -29,33 +30,40 @@ public class FireStationController {
     }
 
     @PostMapping (value = "/firestation")
-    public ResponseEntity<FireStation> add(@RequestBody @Validated FireStation fireStation){
-        if (fireStationService.add(fireStation)) {
+    public ResponseEntity<FireStation> add(@RequestBody @Validated CreateFireStationDTO fireStation){
+        try {
+            fireStationService.add(fireStation);
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .build()
                     .toUri();
             return ResponseEntity.created(location).build();
-        } else {
-            log.error("There is already a station assigned to this address");
+        } catch (Exception e){
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
     @DeleteMapping (value = "/firestation/{address}")
-    public ResponseEntity<FireStation> delete(@PathVariable String address){
-        if (fireStationService.delete(address)) {
+    public ResponseEntity<FireStation> delete(@PathVariable String address) {
+        try {
+            fireStationService.delete(address);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping (value = "/firestation/{address}")
-    public ResponseEntity<FireStation> update(@RequestBody @Validated(OnUpdate.class) FireStation fireStation, @PathVariable String address){
-        if (fireStationService.update(fireStation, address)) {
+    public ResponseEntity<FireStation> update(@RequestBody @Validated UpdateFireStationDTO fireStation, @PathVariable String address) {
+        try {
+            fireStationService.update(fireStation, address);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 //    @GetMapping (value = "/firestations")

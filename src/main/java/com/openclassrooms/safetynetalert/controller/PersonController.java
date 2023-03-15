@@ -1,6 +1,7 @@
 package com.openclassrooms.safetynetalert.controller;
 
-import com.openclassrooms.safetynetalert.model.OnUpdate;
+import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
+import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
 import com.openclassrooms.safetynetalert.model.Person;
 import com.openclassrooms.safetynetalert.service.impl.PersonServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -25,32 +26,40 @@ public class PersonController {
     }
 
     @PostMapping (value = "/person")
-    public ResponseEntity<Person> add(@RequestBody @Validated Person person) {
-        if (personService.add(person)) {
+    public ResponseEntity<Person> add(@RequestBody @Validated CreatePersonDTO personDTO) {
+        try {
+            personService.add(personDTO);
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .build()
                     .toUri();
             return ResponseEntity.created(location).build();
-        } else {
-            log.error("Person already exist");
+        } catch (Exception e){
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
     @DeleteMapping (value = "/person/{firstName}&{lastName}")
-    public ResponseEntity<Person> delete(@PathVariable String firstName, @PathVariable String lastName){
-        if (personService.delete(firstName, lastName)){
+    public ResponseEntity<Person> delete(@PathVariable String firstName, @PathVariable String lastName) {
+        try {
+            personService.delete(firstName, lastName);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping (value = "/person/{firstName}&{lastName}")
-    public ResponseEntity<Person> update(@RequestBody @Validated(OnUpdate.class) Person person, @PathVariable String firstName, @PathVariable String lastName){
-        if (personService.update(person, firstName, lastName)){
+    public ResponseEntity<Person> update(@RequestBody @Validated UpdatePersonDTO personDTO, @PathVariable String firstName, @PathVariable String lastName){
+        try {
+            personService.update(personDTO, firstName, lastName);
             return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 }

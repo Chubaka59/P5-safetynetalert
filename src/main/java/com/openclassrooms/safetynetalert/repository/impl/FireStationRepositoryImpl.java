@@ -1,12 +1,15 @@
 package com.openclassrooms.safetynetalert.repository.impl;
 
+import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
+import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
 import com.openclassrooms.safetynetalert.model.FireStation;
+import com.openclassrooms.safetynetalert.repository.DataRepository;
 import com.openclassrooms.safetynetalert.repository.FireStationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -16,40 +19,38 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 
 
     @Override
-    public List<FireStation> getAllFireStation(){
+    public List<FireStation> getAllFireStations() {
         return dataRepository.getFireStations();
     }
 
     @Override
-    public boolean add(FireStation fireStation) {
-        if (!isDuplicated(fireStation))
-            return dataRepository.getFireStations().add(fireStation);
-        return false;
-    }
-
-    @Override
-    public boolean delete(String address) {
-        return dataRepository.getFireStations().removeIf(f -> f.getAddress().equals(address));
-    }
-
-    @Override
-    public boolean update(FireStation fireStation, String address) {
-        AtomicBoolean isDone = new AtomicBoolean(false);
-       dataRepository.getFireStations()
-                .stream()
-                .filter(i -> i.getAddress().equals(address))
-                .findFirst()
-                .ifPresent(f -> {
-                    f.setStation(fireStation.getStation());
-                    isDone.set(true);
-                });
-           return isDone.get();
-    }
-
-    @Override
-    public boolean isDuplicated(FireStation fireStation) {
+    public Optional<FireStation> getFireStation(String address) {
         return dataRepository.getFireStations()
-                .stream().anyMatch(f -> f.getAddress().equals(fireStation.getAddress()));
+                .stream()
+                .filter(f -> f.getAddress().equals(address))
+                .findFirst();
+    }
+
+    @Override
+    public FireStation add(CreateFireStationDTO fireStationDTO) {
+        dataRepository.getFireStations().add(new FireStation().create(fireStationDTO));
+        return getFireStation(fireStationDTO.getAddress()).orElseThrow();
+    }
+
+    @Override
+    public FireStation delete(FireStation fireStation) {
+        dataRepository.getFireStations().removeIf(f -> f.getAddress().equals(fireStation.getAddress()));
+        return fireStation;
+    }
+
+    @Override
+    public FireStation update(FireStation fireStation, UpdateFireStationDTO fireStationDTO) {
+        dataRepository.getFireStations()
+                .stream()
+                .filter(f -> f.getAddress().equals(fireStation.getAddress()))
+                .findFirst()
+                .ifPresent(f -> f.update(fireStationDTO));
+        return getFireStation(fireStation.getAddress()).orElseThrow();
     }
 
     @Override

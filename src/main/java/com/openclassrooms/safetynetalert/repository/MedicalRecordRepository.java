@@ -1,5 +1,7 @@
 package com.openclassrooms.safetynetalert.repository;
 
+import com.openclassrooms.safetynetalert.dto.medicalrecord.CreateMedicalRecordDTO;
+import com.openclassrooms.safetynetalert.dto.medicalrecord.UpdateMedicalRecordDTO;
 import com.openclassrooms.safetynetalert.model.MedicalRecord;
 import com.openclassrooms.safetynetalert.model.Person;
 
@@ -8,42 +10,18 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MedicalRecordRepository {
-    /**
-     * get all MedicalRecord from DataRepository
-     * @return a list of MedicalRecords
-     */
+
     List<MedicalRecord> getAllMedicalRecords();
 
-    /**
-     * add a medicalRecord to the medicalRecordList
-     * @param medicalRecord the medicalRecord to add
-     * @return a boolean
-     */
-    boolean add (MedicalRecord medicalRecord);
+    Optional<MedicalRecord> getMedicalRecord(String firstname, String lastname);
 
-    /**
-     * delete a medicalRecord from the medicalRecordList
-     * @param firstName the firstName of the medicalRecord to delete
-     * @param lastName the lastName of the medicalRecord to delete
-     * @return a boolean
-     */
-    boolean delete(String firstName, String lastName);
+    MedicalRecord add (CreateMedicalRecordDTO medicalRecordDTO);
 
-    /**
-     * update the inforamtion of a medicalRecord in the medicalRecordList
-     * @param medicalRecord the information to update
-     * @param firstName the firstName of the medicalRecord to update
-     * @param lastName the lastName of the medicalRecord to update
-     * @return a boolean
-     */
-    boolean update(MedicalRecord medicalRecord, String firstName, String lastName);
 
-    /**
-     * check if a medicalRecord is already in the medicalRecordList
-     * @param medicalRecord the medicalRecord to check if duplicated
-     * @return a boolean
-     */
-    boolean isDuplicated(MedicalRecord medicalRecord);
+    MedicalRecord delete(MedicalRecord medicalRecord);
+
+
+    MedicalRecord update(MedicalRecord medicalRecord, UpdateMedicalRecordDTO medicalRecordDTO);
 
     LocalDate getBirthdateListFromPersonList(Person person);
     int getAge(LocalDate birthdate);
