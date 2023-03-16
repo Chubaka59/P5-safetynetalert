@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.controller;
 
+import com.openclassrooms.safetynetalert.dto.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
 import com.openclassrooms.safetynetalert.model.FireStation;
@@ -64,9 +65,8 @@ public class FireStationController {
         }
     }
 
-//    @GetMapping (value = "/firestations")
-//    public FireStationDTO getPersonsFromFireStation(@RequestParam int stationNumber){
-//
-//
-//    }
+    @GetMapping (value = "/firestations")
+    public FireStationDTO getPersonsFromFireStation(@RequestParam int stationNumber){
+        return fireStationService.getPersonsFromFireStation(stationNumber);
+    }
 }

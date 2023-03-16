@@ -36,6 +36,5 @@ public interface FireStationService {
      */
     FireStation update (UpdateFireStationDTO fireStationDTO, String address);
 
-
-    List<FireStationDTO> getPersonsFromFireStation(int stationNumber);
+    FireStationDTO getPersonsFromFireStation(int stationNumber);
 }
