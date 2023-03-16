@@ -1,20 +1,28 @@
 package com.openclassrooms.safetynetalert.service;
 
+import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
+import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
+import com.openclassrooms.safetynetalert.exception.firestation.FireStationAlreadyExistException;
+import com.openclassrooms.safetynetalert.exception.firestation.FireStationNotFoundException;
 import com.openclassrooms.safetynetalert.model.FireStation;
-import com.openclassrooms.safetynetalert.repository.impl.FireStationRepositoryImpl;
+import com.openclassrooms.safetynetalert.repository.FireStationRepository;
 import com.openclassrooms.safetynetalert.service.impl.FireStationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class FireStationServiceTest {
-    FireStationRepositoryImpl fireStationRepository = mock(FireStationRepositoryImpl.class);
+    FireStationRepository fireStationRepository = mock(FireStationRepository.class);
     FireStationServiceImpl fireStationService;
     FireStation fireStation;
+    CreateFireStationDTO createFireStationDTO = mock(CreateFireStationDTO.class);
+    UpdateFireStationDTO updateFireStationDTO;
 
     @BeforeEach
     public void setupPerTest(){
@@ -37,37 +45,64 @@ public class FireStationServiceTest {
 
     @Test
     public void addTest(){
-        //GIVEN when the method is called, it should return a boolean
-        when(fireStationRepository.add(any(FireStation.class))).thenReturn(true);
+        //GIVEN the fireStation we would create doesn't exist
+        when(fireStationRepository.getFireStation(createFireStationDTO.getAddress())).thenReturn(Optional.empty());
 
-        //WHEN the method is called
-        fireStationService.add(fireStation);
+        //WHEN we would add the fireStation
+        fireStationService.add(createFireStationDTO);
 
         //THEN fireStationRepository.add is called 1 time
-        verify(fireStationRepository, times(1)).add(any(FireStation.class));
+        verify(fireStationRepository, times(1)).add(any(CreateFireStationDTO.class));
+    }
+
+    @Test
+    public void addWhenFireStationAlreadyExistTest(){
+        //GIVEN the fireStation we would add already exist
+        when(fireStationRepository.getFireStation(createFireStationDTO.getAddress())).thenReturn(Optional.of(fireStation));
+
+        //WHEN we would add the fireStation THEN an exception is raised
+        assertThrows(FireStationAlreadyExistException.class, () -> fireStationService.add(createFireStationDTO));
     }
 
     @Test
     public void deleteTest(){
-        //GIVEN when the method is called, it should return a boolean
-        when(fireStationRepository.delete(anyString())).thenReturn(true);
+        //GIVEN the fireStation we would delete is found
+        when(fireStationRepository.getFireStation(anyString())).thenReturn(Optional.of(fireStation));
 
-        //WHEN the method is called
+        //WHEN we delete the fireStation
         fireStationService.delete(anyString());
 
         //THEN fireStationRepository.delete is called 1 time
-        verify(fireStationRepository, times(1)).delete(anyString());
+        verify(fireStationRepository, times(1)).delete(any(FireStation.class));
+    }
+
+    @Test
+    public void deleteWhenFireStationIsNotFoundTest(){
+        //GIVEN the fireStation we would delete is not found
+        when(fireStationRepository.getFireStation(anyString())).thenReturn(Optional.empty());
+
+        //WHEN we would delete THEN an exception is raised
+        assertThrows(FireStationNotFoundException.class, () -> fireStationService.delete(anyString()));
     }
 
     @Test
     public void updateTest(){
-        //GIVEN when the method is called, it should return a boolean
-        when(fireStationRepository.update(any(FireStation.class), anyString())).thenReturn(true);
+        //GIVEN the fireStation we would update is found
+        when(fireStationRepository.getFireStation(anyString())).thenReturn(Optional.of(fireStation));
 
-        //WHEN the method is called
-        fireStationService.update(fireStation, "test");
+        //WHEN we update
+        fireStationService.update(updateFireStationDTO, anyString());
 
         //THEN personRepository.update is called 1 time
-        verify(fireStationRepository, times(1)).update(any(FireStation.class), anyString());
+        verify(fireStationRepository, times(1)).update(fireStation, updateFireStationDTO);
+    }
+
+    @Test
+    public void updateWhenFireStationIsNotFoundTest(){
+        //GIVEN the fireStation we would update is not found
+        when(fireStationRepository.getFireStation(anyString())).thenReturn(Optional.empty());
+
+        //WHEN we would update THEN an exception is raised
+        assertThrows(FireStationNotFoundException.class, () -> fireStationService.update(updateFireStationDTO, anyString()));
     }
 }

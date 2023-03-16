@@ -1,7 +1,11 @@
 package com.openclassrooms.safetynetalert.controller;
 
+import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
+import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
+import com.openclassrooms.safetynetalert.exception.firestation.FireStationAlreadyExistException;
+import com.openclassrooms.safetynetalert.exception.firestation.FireStationNotFoundException;
 import com.openclassrooms.safetynetalert.model.FireStation;
-import com.openclassrooms.safetynetalert.service.impl.FireStationServiceImpl;
+import com.openclassrooms.safetynetalert.service.FireStationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +25,11 @@ import static org.mockito.Mockito.*;
 public class FireStationControllerTest {
     @Autowired
     MockMvc mockMvc;
-    FireStationServiceImpl fireStationService = mock(FireStationServiceImpl.class);
+    FireStationService fireStationService = mock(FireStationService.class);
     FireStationController fireStationController;
     FireStation fireStation;
+    CreateFireStationDTO createFireStationDTO;
+    UpdateFireStationDTO updateFireStationDTO;
 
     @BeforeEach
     public void setupPerTest(){
@@ -43,33 +49,32 @@ public class FireStationControllerTest {
     @Test
     public void addTest(){
         //GIVEN we need to add a person
-        given(fireStationService.add(any(FireStation.class))).willReturn(true);
+        given(fireStationService.add(any(CreateFireStationDTO.class))).willReturn(any(FireStation.class));
 
         //WHEN we post a new fireStation
-        ResponseEntity<FireStation> response = fireStationController.add(fireStation);
+        ResponseEntity<FireStation> response = fireStationController.add(createFireStationDTO);
 
         //THEN the fireStation is created
-        then(fireStationService).should().add(fireStation);
+        then(fireStationService).should().add(createFireStationDTO);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
     public void addWhenFireStationAlreadyExistTest(){
         //GIVEN the fireStation to add already exist
-        given(fireStationService.add(any(FireStation.class))).willReturn(false);
+        given(fireStationService.add(createFireStationDTO)).willThrow(new FireStationAlreadyExistException(anyString()));
 
         //WHEN we add the fireStation
-        ResponseEntity<FireStation> response = fireStationController.add(fireStation);
+        ResponseEntity<FireStation> response = fireStationController.add(createFireStationDTO);
 
         //THEN the response status is conflict
-        then(fireStationService).should().add(fireStation);
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
     }
 
     @Test
     public void deleteTest(){
         //GIVEN a fireStation needs to be deleted
-        given(fireStationService.delete(anyString())).willReturn(true);
+        given(fireStationService.delete(anyString())).willReturn(fireStation);
 
         //WHEN we request to delete the fireStation
         ResponseEntity<FireStation> response = fireStationController.delete(anyString());
@@ -82,39 +87,39 @@ public class FireStationControllerTest {
     @Test
     public void deleteNotExistingFireStationTest(){
         //GIVEN a fireStation that doesn't exist will be deleted
-        given(fireStationService.delete(anyString())).willReturn(false);
+        given(fireStationService.delete(anyString())).willThrow(new FireStationNotFoundException(anyString()));
 
         //WHEN we request to delete the fireStation
         ResponseEntity<FireStation> response = fireStationController.delete(anyString());
 
         //THEN the method to delete is called and the response is NOT_FOUND
-        then(fireStationService).should().delete(anyString());
+        then(fireStationService).shouldHaveNoInteractions();
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
     public void updateTest(){
         //GIVEN a fireStation will be updated
-        given(fireStationService.update(any(FireStation.class), anyString())).willReturn(true);
+        given(fireStationService.update(updateFireStationDTO, "test")).willReturn(fireStation);
 
         //WHEN we update the fireStation
-        ResponseEntity<FireStation> response = fireStationController.update(fireStation, "test");
+        ResponseEntity<FireStation> response = fireStationController.update(updateFireStationDTO, "test");
 
         //THEN the method to update is called and the response is OK
-        then(fireStationService).should().update(any(FireStation.class), anyString());
+        then(fireStationService).should().update(updateFireStationDTO, "test");
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void updateNotExistingFireStationTest(){
         //GIVEn the fireStation we would update doesn't exist
-        given(fireStationService.update(any(FireStation.class), anyString())).willReturn(false);
+        given(fireStationService.update(any(UpdateFireStationDTO.class), anyString())).willThrow(new FireStationNotFoundException(anyString()));
 
         //WHEN we update the fireStation
-        ResponseEntity<FireStation> response = fireStationController.update(fireStation, "test");
+        ResponseEntity<FireStation> response = fireStationController.update(any(UpdateFireStationDTO.class), anyString());
 
         //THEN the response is NOT_FOUND
-        then(fireStationService).should().update(any(FireStation.class), anyString());
+        then(fireStationService).shouldHaveNoInteractions();
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 }

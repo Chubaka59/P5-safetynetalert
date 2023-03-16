@@ -28,9 +28,9 @@ public class FireStationController {
     }
 
     @PostMapping (value = "/firestation")
-    public ResponseEntity<FireStation> add(@RequestBody @Validated CreateFireStationDTO fireStation){
+    public ResponseEntity<FireStation> add(@RequestBody @Validated CreateFireStationDTO fireStationDTO){
         try {
-            fireStationService.add(fireStation);
+            fireStationService.add(fireStationDTO);
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .build()
