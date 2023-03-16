@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class PersonCRUDIT {
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @BeforeEach
     public void setupPerTest(){
