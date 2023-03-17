@@ -3,6 +3,7 @@ package com.openclassrooms.safetynetalert.service;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
+import com.openclassrooms.safetynetalert.dto.phonealert.PhoneAlertDTO;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationAlreadyExistException;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationNotFoundException;
 import com.openclassrooms.safetynetalert.model.FireStation;
@@ -32,11 +33,13 @@ public class FireStationServiceTest {
     private UpdateFireStationDTO updateFireStationDTO;
     private MedicalRecordRepository medicalRecordRepository = mock(MedicalRecordRepository.class);
     private PersonRepository personRepository = mock(PersonRepository.class);
+    private Person person;
 
     @BeforeEach
     public void setupPerTest(){
         fireStation = new FireStation();
         fireStationService = new FireStationServiceImpl(fireStationRepository, personRepository, medicalRecordRepository);
+        person = new Person();
     }
 
     @Test
@@ -121,7 +124,6 @@ public class FireStationServiceTest {
         List<String> addresses = new ArrayList<>();
         addresses.add("test");
         List<Person> personList = new ArrayList<>();
-        Person person = new Person();
         MedicalRecord medicalRecord = new MedicalRecord();
 
         person.setFirstName("test");
@@ -143,5 +145,24 @@ public class FireStationServiceTest {
 
         assertEquals(fireStationDTO.getNumberOfMinor(), 1);
         assertEquals(fireStationDTO.getPersonDTOList().get(0).getFirstName(), person.getFirstName());
+    }
+
+    @Test
+    public void getPhoneAlertTest(){
+        //GIVEN it should return an addressList and a personList
+        List<String> addresses = new ArrayList<>();
+        addresses.add("test");
+        List<Person> personList = new ArrayList<>();
+        person.setPhone("0123456789");
+        personList.add(person);
+        when(fireStationRepository.getAddressFromStationNumber(anyInt())).thenReturn(addresses);
+        when(personRepository.findByAddress(anyString())).thenReturn(personList);
+
+        //WHEN we request for the phoneAlert
+        List<PhoneAlertDTO> phoneAlertDTOList = fireStationService.getPhoneAlert(1);
+
+        //THEN a list is returned with person's phone number
+        assertEquals(1, phoneAlertDTOList.size());
+        assertEquals(person.getPhone(), phoneAlertDTOList.get(0).getPhone());
     }
 }

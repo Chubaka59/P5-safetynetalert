@@ -3,6 +3,7 @@ package com.openclassrooms.safetynetalert.controller;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
+import com.openclassrooms.safetynetalert.dto.phonealert.PhoneAlertDTO;
 import com.openclassrooms.safetynetalert.model.FireStation;
 import com.openclassrooms.safetynetalert.service.FireStationService;
 import lombok.RequiredArgsConstructor;
@@ -68,5 +69,10 @@ public class FireStationController {
     @GetMapping (value = "/firestations")
     public FireStationDTO getPersonsFromFireStation(@RequestParam int stationNumber){
         return fireStationService.getPersonsFromFireStation(stationNumber);
+    }
+
+    @GetMapping (value = "/phoneAlert")
+    public List<PhoneAlertDTO> getPhoneAlert(@RequestParam int firestation){
+        return fireStationService.getPhoneAlert(firestation);
     }
 }

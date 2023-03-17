@@ -4,6 +4,7 @@ import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.PersonDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
+import com.openclassrooms.safetynetalert.dto.phonealert.PhoneAlertDTO;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationAlreadyExistException;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationNotFoundException;
 import com.openclassrooms.safetynetalert.model.FireStation;
@@ -69,5 +70,18 @@ public class FireStationServiceImpl  implements FireStationService {
                         .isMinor())
                 .count();
         return new FireStationDTO(personDTOList, numberOfMinor);
+    }
+
+    @Override
+    public List<PhoneAlertDTO> getPhoneAlert(int firestation) {
+        List<String> addresses = fireStationRepository.getAddressFromStationNumber(firestation);
+        List<PhoneAlertDTO> phoneAlertDTOList = new ArrayList<>();
+        for (String address : addresses) {
+            phoneAlertDTOList.addAll(personRepository.findByAddress(address)
+                    .stream()
+                    .map(PhoneAlertDTO::new)
+                    .toList());
+        }
+        return phoneAlertDTOList;
     }
 }

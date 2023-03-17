@@ -3,6 +3,7 @@ package com.openclassrooms.safetynetalert.service;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
+import com.openclassrooms.safetynetalert.dto.phonealert.PhoneAlertDTO;
 import com.openclassrooms.safetynetalert.model.FireStation;
 
 import java.util.List;
@@ -37,4 +38,6 @@ public interface FireStationService {
     FireStation update (UpdateFireStationDTO fireStationDTO, String address);
 
     FireStationDTO getPersonsFromFireStation(int stationNumber);
+
+    List<PhoneAlertDTO> getPhoneAlert(int firestation);
 }

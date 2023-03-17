@@ -159,4 +159,13 @@ public class FireStationIT {
                 .andExpect(content().string(containsString("\"numberOfMajor\":5")))
                 .andExpect(content().string(containsString("\"Peter\"")));
     }
+
+    @Test
+    public void getPhoneAlertTest() throws Exception {
+        //WHEN the request is sent THEN we get a list of phone number
+        mockMvc.perform(get("/phoneAlert?firestation=1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("841-874-6512")));
+    }
 }

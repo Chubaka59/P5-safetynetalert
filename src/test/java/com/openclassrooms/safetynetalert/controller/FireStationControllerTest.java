@@ -129,4 +129,16 @@ public class FireStationControllerTest {
         //THEN fireStationService.getPersonsFromFireStation is called once
         verify(fireStationService, times(1)).getPersonsFromFireStation(anyInt());
     }
+
+    @Test
+    public void getPhoneAlertTest(){
+        //GIVEN this will return a list
+        when(fireStationService.getPhoneAlert(anyInt())).thenReturn(anyList());
+
+        //WHEN we call the method
+        fireStationController.getPhoneAlert(1);
+
+        //THEN fireStationService.getPhoneAlert is called once
+        verify(fireStationService, times(1)).getPhoneAlert(anyInt());
+    }
 }
