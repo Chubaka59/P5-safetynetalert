@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class FireStationCRUDIT {
+public class FireStationIT {
     @Autowired
     private MockMvc mockMvc;
 
@@ -147,5 +147,16 @@ public class FireStationCRUDIT {
         mockMvc.perform(requestBuilders)
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void getPersonsFromFireStationTest() throws Exception {
+        //WHEN the request is sent THEN we get a list of person with the count of major and minor
+        mockMvc.perform(get("/firestations?stationNumber=1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"numberOfMinor\":1")))
+                .andExpect(content().string(containsString("\"numberOfMajor\":5")))
+                .andExpect(content().string(containsString("Peter")));
     }
 }
