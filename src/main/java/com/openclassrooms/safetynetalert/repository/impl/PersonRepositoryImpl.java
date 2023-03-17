@@ -8,7 +8,6 @@ import com.openclassrooms.safetynetalert.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,13 +36,6 @@ public class PersonRepositoryImpl implements PersonRepository {
         return getPerson(personDTO.getFirstName(), personDTO.getLastName()).orElseThrow();
     }
 
-    public List<Person> findByAddress(String address) {
-            return dataRepository.getPersons()
-                    .stream()
-                    .filter(p -> p.getAddress().equals(address))
-                    .toList();
-    }
-
     public List<String> findByAddressAndReturnPhoneNumber(String address) {
         return dataRepository.getPersons()
                 .stream()
@@ -69,12 +61,10 @@ public class PersonRepositoryImpl implements PersonRepository {
     }
 
     @Override
-    public List<Person> getPersonsFromAddressList(List<String> addresses) {
-        List<Person> personListFoundFromAddress = new ArrayList<>();
-        for(String address:addresses){
-            List<Person> personList = findByAddress(address);
-            personListFoundFromAddress.addAll(personList);
-        }
-        return personListFoundFromAddress;
+    public List<Person> findByAddress(String address) {
+        return dataRepository.getPersons()
+                .stream()
+                .filter(p -> p.getAddress().equals(address))
+                .toList();
     }
 }

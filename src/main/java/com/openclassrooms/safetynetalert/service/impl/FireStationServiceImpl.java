@@ -14,6 +14,7 @@ import com.openclassrooms.safetynetalert.service.FireStationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -53,10 +54,13 @@ public class FireStationServiceImpl  implements FireStationService {
     @Override
     public FireStationDTO getPersonsFromFireStation(int stationNumber) {
         List<String> addresses = fireStationRepository.getAddressFromStationNumber(stationNumber);
-        List<PersonDTO> personDTOList = personRepository.getPersonsFromAddressList(addresses)
-                .stream()
-                .map(PersonDTO::new)
-                .toList();
+        List<PersonDTO> personDTOList = new ArrayList<>();
+        for (String address:addresses) {
+            personDTOList.addAll(personRepository.findByAddress(address)
+                    .stream()
+                    .map(PersonDTO::new)
+                    .toList());
+        }
 
         Long numberOfMinor = personDTOList
                 .stream()

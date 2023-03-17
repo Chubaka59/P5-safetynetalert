@@ -14,7 +14,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class FireStationTest {
+public class FireStationRepositoryTest {
     private DataRepository dataRepository = mock(DataRepository.class);
     private FireStationRepository fireStationRepository;
     private FireStation fireStation;
@@ -100,5 +100,21 @@ public class FireStationTest {
 
         //THEN the information of the person are updated
         assertEquals(fireStationList.get(0), fireStation);
+    }
+
+    @Test
+    public void getAddressFromStationNumber(){
+        //GIVEN a fireStation is in the list
+        fireStation.setAddress("test1");
+        fireStation.setStation(1);
+        fireStationList.add(fireStation);
+        when(dataRepository.getFireStations()).thenReturn(fireStationList);
+
+        //WHEN we search for the addresses of the station
+        List<String> address = fireStationRepository.getAddressFromStationNumber(1);
+
+        //THEN it return a list of addresses
+        assertEquals(1, fireStationList.size());
+        assertEquals(List.of("test1"), address);
     }
 }

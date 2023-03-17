@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.controller;
 
+import com.openclassrooms.safetynetalert.dto.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationAlreadyExistException;
@@ -115,5 +116,17 @@ public class FireStationControllerTest {
         //THEN the response is NOT_FOUND
         then(fireStationService).shouldHaveNoInteractions();
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void getPersonsFromFireStationTest(){
+        //GIVEN this will return a fireStationDTO
+        when(fireStationService.getPersonsFromFireStation(anyInt())).thenReturn(any(FireStationDTO.class));
+
+        //WHEN the method is called
+        fireStationController.getPersonsFromFireStation(1);
+
+        //THEN fireStationService.getPersonsFromFireStation is called once
+        verify(fireStationService, times(1)).getPersonsFromFireStation(anyInt());
     }
 }

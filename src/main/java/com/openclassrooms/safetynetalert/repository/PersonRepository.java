@@ -44,5 +44,5 @@ public interface PersonRepository {
      */
     Person update(Person person, UpdatePersonDTO personDTO);
 
-    List<Person> getPersonsFromAddressList(List<String> addresses);
+    List<Person> findByAddress(String address);
 }

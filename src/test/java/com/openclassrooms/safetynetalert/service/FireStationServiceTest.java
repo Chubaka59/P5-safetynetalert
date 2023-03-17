@@ -1,19 +1,26 @@
 package com.openclassrooms.safetynetalert.service;
 
+import com.openclassrooms.safetynetalert.dto.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationAlreadyExistException;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationNotFoundException;
 import com.openclassrooms.safetynetalert.model.FireStation;
+import com.openclassrooms.safetynetalert.model.MedicalRecord;
+import com.openclassrooms.safetynetalert.model.Person;
 import com.openclassrooms.safetynetalert.repository.FireStationRepository;
+import com.openclassrooms.safetynetalert.repository.MedicalRecordRepository;
+import com.openclassrooms.safetynetalert.repository.PersonRepository;
 import com.openclassrooms.safetynetalert.service.impl.FireStationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -23,11 +30,13 @@ public class FireStationServiceTest {
     private FireStation fireStation;
     private CreateFireStationDTO createFireStationDTO = mock(CreateFireStationDTO.class);
     private UpdateFireStationDTO updateFireStationDTO;
+    private MedicalRecordRepository medicalRecordRepository = mock(MedicalRecordRepository.class);
+    private PersonRepository personRepository = mock(PersonRepository.class);
 
     @BeforeEach
     public void setupPerTest(){
         fireStation = new FireStation();
-        fireStationService = new FireStationServiceImpl(fireStationRepository);
+        fireStationService = new FireStationServiceImpl(fireStationRepository, personRepository, medicalRecordRepository);
     }
 
     @Test
@@ -104,5 +113,35 @@ public class FireStationServiceTest {
 
         //WHEN we would update THEN an exception is raised
         assertThrows(FireStationNotFoundException.class, () -> fireStationService.update(updateFireStationDTO, anyString()));
+    }
+
+    @Test
+    public void getPersonsFromFireStationTest(){
+        //GIVEN there is a minor person in the list
+        List<String> addresses = new ArrayList<>();
+        addresses.add("test");
+        List<Person> personList = new ArrayList<>();
+        Person person = new Person();
+        MedicalRecord medicalRecord = new MedicalRecord();
+
+        person.setFirstName("test");
+        person.setLastName("test");
+        medicalRecord.setBirthdate(LocalDate.now());
+        personList.add(person);
+
+        when(fireStationRepository.getAddressFromStationNumber(anyInt())).thenReturn(addresses);
+        when(personRepository.findByAddress("test")).thenReturn(personList);
+        when(medicalRecordRepository.getMedicalRecord("test", "test")).thenReturn(Optional.of(medicalRecord));
+
+        //WHEN we create the DTO
+        FireStationDTO fireStationDTO = fireStationService.getPersonsFromFireStation(1);
+
+        //THEN those methods are called and the minor is in it
+        verify(fireStationRepository, times(1)).getAddressFromStationNumber(anyInt());
+        verify(personRepository, times(1)).findByAddress(anyString());
+        verify(medicalRecordRepository, times(1)).getMedicalRecord(anyString(), anyString());
+
+        assertEquals(fireStationDTO.getNumberOfMinor(), 1);
+        assertEquals(fireStationDTO.getPersonDTOList().get(0).getFirstName(), person.getFirstName());
     }
 }

@@ -109,4 +109,14 @@ public class PersonRepositoryTest {
         //THEN the information of the person are updated
         assertEquals(personList.get(0), person);
     }
+
+    @Test
+    public void getPersonsFromAddressListTest(){
+        //GIVEN there is a person in the personList
+        person.setFirstName("test");
+        person.setLastName("test");
+        person.setAddress("test");
+        personList.add(person);
+        when(personRepository.findByAddress(person.getAddress())).thenReturn(personList);
+    }
 }
