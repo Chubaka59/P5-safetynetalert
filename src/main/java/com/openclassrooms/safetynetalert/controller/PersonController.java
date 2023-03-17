@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.controller;
 
+import com.openclassrooms.safetynetalert.dto.childAlert.ChildAlertDTO;
 import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
 import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
 import com.openclassrooms.safetynetalert.model.Person;
@@ -60,6 +61,10 @@ public class PersonController {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
 
+    @GetMapping(value = "/childAlert")
+    public ChildAlertDTO getChildAlert(@RequestParam String address){
+        return personService.getChildAlert(address);
     }
 }

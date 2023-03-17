@@ -1,4 +1,4 @@
-package com.openclassrooms.safetynetalert.dto;
+package com.openclassrooms.safetynetalert.dto.firestation;
 
 import com.openclassrooms.safetynetalert.model.Person;
 import lombok.Data;

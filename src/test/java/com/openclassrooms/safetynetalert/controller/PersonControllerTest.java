@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.controller;
 
+import com.openclassrooms.safetynetalert.dto.childAlert.ChildAlertDTO;
 import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
 import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
 import com.openclassrooms.safetynetalert.exception.person.PersonAlreadyExistException;
@@ -118,5 +119,17 @@ public class PersonControllerTest {
         //THEN the response is NOT_FOUND
         then(personService).shouldHaveNoInteractions();
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void getChildAlert(){
+        //GIVEN this should return a ChildAlertDTO
+        when(personService.getChildAlert(anyString())).thenReturn(any(ChildAlertDTO.class));
+
+        //WHEN the method is called
+        personController.getChildAlert("test");
+
+        //THEN personService.getChildAlert is called once
+        verify(personService, times(1)).getChildAlert(anyString());
     }
 }

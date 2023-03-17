@@ -157,6 +157,6 @@ public class FireStationIT {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"numberOfMinor\":1")))
                 .andExpect(content().string(containsString("\"numberOfMajor\":5")))
-                .andExpect(content().string(containsString("Peter")));
+                .andExpect(content().string(containsString("\"Peter\"")));
     }
 }

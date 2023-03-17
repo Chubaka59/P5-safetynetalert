@@ -1,8 +1,8 @@
 package com.openclassrooms.safetynetalert.service.impl;
 
-import com.openclassrooms.safetynetalert.dto.FireStationDTO;
-import com.openclassrooms.safetynetalert.dto.PersonDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
+import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
+import com.openclassrooms.safetynetalert.dto.firestation.PersonDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationAlreadyExistException;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationNotFoundException;

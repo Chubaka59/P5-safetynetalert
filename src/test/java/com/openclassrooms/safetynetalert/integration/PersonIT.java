@@ -180,4 +180,14 @@ public class PersonIT {
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void getChildAlertTest() throws Exception {
+        mockMvc.perform(get("/childAlert?address=947 E. Rose Dr"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"Kendrik\"")))
+                .andExpect(content().string(containsString("\"age\":9")))
+                .andExpect(content().string(containsString("\"Brian\"")));
+    }
 }

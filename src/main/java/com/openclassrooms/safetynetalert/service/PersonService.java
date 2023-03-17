@@ -1,5 +1,8 @@
 package com.openclassrooms.safetynetalert.service;
 
+import com.openclassrooms.safetynetalert.dto.childAlert.ChildAlertDTO;
+import com.openclassrooms.safetynetalert.dto.childAlert.MajorPersonDTO;
+import com.openclassrooms.safetynetalert.dto.childAlert.MinorPersonDTO;
 import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
 import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
 import com.openclassrooms.safetynetalert.model.Person;
@@ -36,4 +39,8 @@ public interface PersonService {
      * @return the person that has been updated
      */
     Person update(UpdatePersonDTO personDTO, String firstName, String lastName);
+
+    ChildAlertDTO getChildAlert(String address);
+    List<MinorPersonDTO> getMinorPersonDTOList(String address);
+    List<MajorPersonDTO> getMajorPersonDTOList(String address);
 }
