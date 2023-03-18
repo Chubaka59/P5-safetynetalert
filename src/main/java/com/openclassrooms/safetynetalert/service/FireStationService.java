@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.service;
 
+import com.openclassrooms.safetynetalert.dto.fire.FireDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
@@ -40,4 +41,6 @@ public interface FireStationService {
     FireStationDTO getPersonsFromFireStation(int stationNumber);
 
     List<PhoneAlertDTO> getPhoneAlert(int firestation);
+
+    FireDTO getFire(String address);
 }

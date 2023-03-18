@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.controller;
 
+import com.openclassrooms.safetynetalert.dto.fire.FireDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
@@ -140,5 +141,17 @@ public class FireStationControllerTest {
 
         //THEN fireStationService.getPhoneAlert is called once
         verify(fireStationService, times(1)).getPhoneAlert(anyInt());
+    }
+
+    @Test
+    public void getFire(){
+        //GIVEN this will return a FireDTO
+        when(fireStationService.getFire(anyString())).thenReturn(any(FireDTO.class));
+
+        //WHEN the method is called
+        fireStationController.getFire("test");
+
+        //THEN fireStationService.getFire is called once
+        verify(fireStationService, times(1)).getFire(anyString());
     }
 }

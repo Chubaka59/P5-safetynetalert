@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.controller;
 
+import com.openclassrooms.safetynetalert.dto.fire.FireDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
@@ -74,5 +75,10 @@ public class FireStationController {
     @GetMapping (value = "/phoneAlert")
     public List<PhoneAlertDTO> getPhoneAlert(@RequestParam int firestation){
         return fireStationService.getPhoneAlert(firestation);
+    }
+
+    @GetMapping (value = "fire")
+    public FireDTO getFire(@RequestParam String address){
+        return fireStationService.getFire(address);
     }
 }

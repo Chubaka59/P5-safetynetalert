@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.service;
 
+import com.openclassrooms.safetynetalert.dto.fire.FireDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
@@ -34,12 +35,14 @@ public class FireStationServiceTest {
     private MedicalRecordRepository medicalRecordRepository = mock(MedicalRecordRepository.class);
     private PersonRepository personRepository = mock(PersonRepository.class);
     private Person person;
+    private MedicalRecord medicalRecord;
 
     @BeforeEach
     public void setupPerTest(){
         fireStation = new FireStation();
         fireStationService = new FireStationServiceImpl(fireStationRepository, personRepository, medicalRecordRepository);
         person = new Person();
+        medicalRecord = new MedicalRecord();
     }
 
     @Test
@@ -164,5 +167,45 @@ public class FireStationServiceTest {
         //THEN a list is returned with person's phone number
         assertEquals(1, phoneAlertDTOList.size());
         assertEquals(person.getPhone(), phoneAlertDTOList.get(0).getPhone());
+    }
+
+    @Test
+    public void getFireTest(){
+        //GIVEN a person is in the list and a fireStation is in the list
+        List<Person> personList = new ArrayList<>();
+        person.setFirstName("test");
+        person.setLastName("test");
+        person.setAddress("test");
+        personList.add(person);
+        medicalRecord.setBirthdate(LocalDate.now());
+        fireStation.setStation(1);
+        when(personRepository.getAllPersons()).thenReturn(personList);
+        when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.of(medicalRecord));
+        when(fireStationRepository.getFireStation(anyString())).thenReturn(Optional.of(fireStation));
+
+        //WHEN we get the Fire information
+        FireDTO fireDTO = fireStationService.getFire("test");
+
+        //THEN we get the fireStation number and the person information
+        assertEquals(person.getFirstName(), fireDTO.getFirePersonDTOList().get(0).getFirstName());
+        assertEquals(fireStation.getStation(), fireDTO.getFireStationNumber());
+    }
+
+    @Test
+    public void getFireWhenAddressIsUnknown(){
+        //GIVEN a person is in the list and the firestation cannot be found
+        List<Person> personList = new ArrayList<>();
+        person.setFirstName("test");
+        person.setLastName("test");
+        person.setAddress("test");
+        personList.add(person);
+        medicalRecord.setBirthdate(LocalDate.now());
+        fireStation.setStation(1);
+        when(personRepository.getAllPersons()).thenReturn(personList);
+        when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.of(medicalRecord));
+        when(fireStationRepository.getFireStation(anyString())).thenReturn(Optional.empty());
+
+        //WHEN we get the Fire information THEN an exception is raised
+        assertThrows(FireStationNotFoundException.class, () -> fireStationService.getFire("test"));
     }
 }

@@ -1,5 +1,7 @@
 package com.openclassrooms.safetynetalert.service.impl;
 
+import com.openclassrooms.safetynetalert.dto.fire.FireDTO;
+import com.openclassrooms.safetynetalert.dto.fire.FirePersonDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.PersonDTO;
@@ -83,5 +85,19 @@ public class FireStationServiceImpl  implements FireStationService {
                     .toList());
         }
         return phoneAlertDTOList;
+    }
+
+    @Override
+    public FireDTO getFire(String address) {
+        List<FirePersonDTO> firePersonDTOList = personRepository.getAllPersons()
+                .stream()
+                .filter(p -> p.getAddress().equals(address))
+                .map(p -> new FirePersonDTO(p, medicalRecordRepository.getMedicalRecord(p.getFirstName(), p.getLastName()).get()))
+                .toList();
+
+        FireStation fireStation = fireStationRepository.getFireStation(address)
+                .orElseThrow(() -> new FireStationNotFoundException(address));
+
+        return new FireDTO(fireStation, firePersonDTOList);
     }
 }

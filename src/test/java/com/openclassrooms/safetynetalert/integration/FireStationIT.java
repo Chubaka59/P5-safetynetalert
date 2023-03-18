@@ -168,4 +168,14 @@ public class FireStationIT {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("841-874-6512")));
     }
+
+    @Test
+    public void getFireTest() throws Exception {
+        mockMvc.perform(get("/fire?address=1509 Culver St"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"fireStationNumber\":3")))
+                .andExpect(content().string(containsString("John")))
+                .andExpect(content().string(containsString("aznol:350mg")));
+    }
 }
