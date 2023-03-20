@@ -171,11 +171,24 @@ public class FireStationIT {
 
     @Test
     public void getFireTest() throws Exception {
+        //WHEN the request is sent THEN we get a person with the correct information
         mockMvc.perform(get("/fire?address=1509 Culver St"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"fireStationNumber\":3")))
                 .andExpect(content().string(containsString("John")))
                 .andExpect(content().string(containsString("aznol:350mg")));
+    }
+
+    @Test
+    public void getFloodTest() throws Exception {
+        //WHEN the request is sent THEN we get the list with an address and a firstName of both stations
+        mockMvc.perform(get("/flood/stations?stations=1,2"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"address\":\"644 Gershwin Cir\"")))
+                .andExpect(content().string(containsString("\"firstName\":\"Peter\"")))
+                .andExpect(content().string(containsString("\"address\":\"29 15th St\"")))
+                .andExpect(content().string(containsString("\"firstName\":\"Jonanathan\"")));
     }
 }

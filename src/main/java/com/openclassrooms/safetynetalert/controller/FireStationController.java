@@ -4,6 +4,7 @@ import com.openclassrooms.safetynetalert.dto.fire.FireDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
+import com.openclassrooms.safetynetalert.dto.flood.FloodDTO;
 import com.openclassrooms.safetynetalert.dto.phonealert.PhoneAlertDTO;
 import com.openclassrooms.safetynetalert.model.FireStation;
 import com.openclassrooms.safetynetalert.service.FireStationService;
@@ -77,8 +78,13 @@ public class FireStationController {
         return fireStationService.getPhoneAlert(firestation);
     }
 
-    @GetMapping (value = "fire")
+    @GetMapping (value = "/fire")
     public FireDTO getFire(@RequestParam String address){
         return fireStationService.getFire(address);
+    }
+
+    @GetMapping (value = "/flood/stations")
+    public List<FloodDTO> getFlood(@RequestParam List<Integer> stations){
+        return fireStationService.getFlood(stations);
     }
 }

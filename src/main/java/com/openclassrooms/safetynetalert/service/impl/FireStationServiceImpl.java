@@ -6,6 +6,8 @@ import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.PersonDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
+import com.openclassrooms.safetynetalert.dto.flood.FloodDTO;
+import com.openclassrooms.safetynetalert.dto.flood.FloodPersonDTO;
 import com.openclassrooms.safetynetalert.dto.phonealert.PhoneAlertDTO;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationAlreadyExistException;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationNotFoundException;
@@ -99,5 +101,24 @@ public class FireStationServiceImpl  implements FireStationService {
                 .orElseThrow(() -> new FireStationNotFoundException(address));
 
         return new FireDTO(fireStation, firePersonDTOList);
+    }
+
+    @Override
+    public List<FloodDTO> getFlood(List<Integer> stations) {
+        List<FloodDTO> floodDTOList = new ArrayList<>();
+        for (int station:stations) {
+            List<String> addresses = fireStationRepository.getAddressFromStationNumber(station);
+            for (String address:addresses) {
+                List<FloodPersonDTO> floodPersonDTOList = personRepository.getAllPersons()
+                        .stream()
+                        .filter(p -> p.getAddress().equals(address))
+                        .map(p -> new FloodPersonDTO(p, medicalRecordRepository.getMedicalRecord(p.getFirstName(), p.getLastName()).get()))
+                        .toList();
+
+                FloodDTO floodDTO = new FloodDTO(address, floodPersonDTOList);
+                floodDTOList.add(floodDTO);
+            }
+        }
+        return floodDTOList;
     }
 }

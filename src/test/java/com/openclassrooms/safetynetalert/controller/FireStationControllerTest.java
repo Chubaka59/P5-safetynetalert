@@ -14,6 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -153,5 +156,18 @@ public class FireStationControllerTest {
 
         //THEN fireStationService.getFire is called once
         verify(fireStationService, times(1)).getFire(anyString());
+    }
+
+    @Test
+    public void getFlood(){
+        //GIVEN this should use a list as parameter and return a list
+        List<Integer> stations = new ArrayList<>();
+        when(fireStationService.getFlood(anyList())).thenReturn(anyList());
+
+        //WHEN the method is called
+        fireStationService.getFlood(stations);
+
+        //THEN fireStationService.getFlood is called once
+        verify(fireStationService, times(1)).getFlood(anyList());
     }
 }

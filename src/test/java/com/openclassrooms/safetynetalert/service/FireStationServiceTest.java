@@ -4,6 +4,7 @@ import com.openclassrooms.safetynetalert.dto.fire.FireDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.CreateFireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.FireStationDTO;
 import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
+import com.openclassrooms.safetynetalert.dto.flood.FloodDTO;
 import com.openclassrooms.safetynetalert.dto.phonealert.PhoneAlertDTO;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationAlreadyExistException;
 import com.openclassrooms.safetynetalert.exception.firestation.FireStationNotFoundException;
@@ -207,5 +208,32 @@ public class FireStationServiceTest {
 
         //WHEN we get the Fire information THEN an exception is raised
         assertThrows(FireStationNotFoundException.class, () -> fireStationService.getFire("test"));
+    }
+
+    @Test
+    public void getFloodTest(){
+        //GIVEN a person is in the list
+        List<Integer> stations = new ArrayList<>();
+        stations.add(1);
+        List<String> addresses = new ArrayList<>();
+        addresses.add("testAddress");
+        List<Person> personList = new ArrayList<>();
+        person.setFirstName("test");
+        person.setLastName("test");
+        person.setAddress("testAddress");
+        personList.add(person);
+        medicalRecord.setFirstName("test");
+        medicalRecord.setLastName("test");
+        medicalRecord.setBirthdate(LocalDate.now());
+        when(fireStationRepository.getAddressFromStationNumber(anyInt())).thenReturn(addresses);
+        when(personRepository.getAllPersons()).thenReturn(personList);
+        when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.of(medicalRecord));
+
+        //WHEN we get for the flood list
+        List<FloodDTO> floodDTOList = fireStationService.getFlood(stations);
+
+        //THEN the person and the address are matching
+        assertEquals(person.getFirstName(), floodDTOList.get(0).getFloodPersonDTOList().get(0).getFirstName());
+        assertEquals(addresses.get(0), floodDTOList.get(0).getAddress());
     }
 }
