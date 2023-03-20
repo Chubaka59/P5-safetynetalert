@@ -132,4 +132,16 @@ public class PersonControllerTest {
         //THEN personService.getChildAlert is called once
         verify(personService, times(1)).getChildAlert(anyString());
     }
+
+    @Test
+    public void getCommunityEmailTest(){
+        //GIVEN this should return a list
+        when(personService.getCommunityEmail(anyString())).thenReturn(anyList());
+
+        //WHEN the method is called
+        personController.getCommunityEmail("test");
+
+        //THEN personService.getCommunityEmail is called once
+        verify(personService, times(1)).getCommunityEmail(anyString());
+    }
 }

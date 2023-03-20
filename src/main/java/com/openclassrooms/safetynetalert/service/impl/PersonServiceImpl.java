@@ -3,8 +3,10 @@ package com.openclassrooms.safetynetalert.service.impl;
 import com.openclassrooms.safetynetalert.dto.childAlert.ChildAlertDTO;
 import com.openclassrooms.safetynetalert.dto.childAlert.MajorPersonDTO;
 import com.openclassrooms.safetynetalert.dto.childAlert.MinorPersonDTO;
+import com.openclassrooms.safetynetalert.dto.communityemail.CommunityEmailDTO;
 import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
 import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
+import com.openclassrooms.safetynetalert.dto.personinfodto.PersonInfoDTO;
 import com.openclassrooms.safetynetalert.exception.person.PersonAlreadyExistException;
 import com.openclassrooms.safetynetalert.exception.person.PersonNotFoundException;
 import com.openclassrooms.safetynetalert.model.Person;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -75,5 +78,24 @@ public class PersonServiceImpl implements PersonService {
                         .isMinor())
                 .map(MajorPersonDTO::new)
                 .toList();
+    }
+
+    @Override
+    public List<PersonInfoDTO> getPersonInfo(String firstName, String lastName) {
+        return personRepository.getAllPersons()
+                .stream()
+                .filter(p -> p.getFirstName().equals(firstName))
+                .filter(p -> p.getLastName().equals(lastName))
+                .map(p -> new PersonInfoDTO(p, medicalRecordRepository.getMedicalRecord(p.getFirstName(), p.getLastName()).get()))
+                .toList();
+    }
+
+    @Override
+    public List<CommunityEmailDTO> getCommunityEmail(String city) {
+        return personRepository.getAllPersons()
+                .stream()
+                .filter(p -> p.getCity().equals(city))
+                .map(CommunityEmailDTO::new)
+                .collect(Collectors.toList());
     }
 }

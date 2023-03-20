@@ -2,6 +2,7 @@ package com.openclassrooms.safetynetalert.service;
 
 import com.openclassrooms.safetynetalert.dto.childAlert.MajorPersonDTO;
 import com.openclassrooms.safetynetalert.dto.childAlert.MinorPersonDTO;
+import com.openclassrooms.safetynetalert.dto.communityemail.CommunityEmailDTO;
 import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
 import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
 import com.openclassrooms.safetynetalert.exception.person.PersonAlreadyExistException;
@@ -198,5 +199,21 @@ public class PersonServiceTest {
 
         //THEN we find it in the list
         assertEquals(0, majorPersonDTOList.size());
+    }
+
+    @Test
+    public void getCommunityEmailTest(){
+        //GIVEN a person is in the list
+        person.setEmail("testAddress");
+        person.setCity("testCity");
+        List<Person> personList = new ArrayList<>();
+        personList.add(person);
+        when(personRepository.getAllPersons()).thenReturn(personList);
+
+        //WHEN we get the emails
+        List<CommunityEmailDTO> communityEmailDTOList = personService.getCommunityEmail("testCity");
+
+        //THEN we find the mail of this person
+        assertEquals(person.getEmail(), communityEmailDTOList.get(0).getMail());
     }
 }

@@ -190,4 +190,12 @@ public class PersonIT {
                 .andExpect(content().string(containsString("\"age\":9")))
                 .andExpect(content().string(containsString("\"Brian\"")));
     }
+
+    @Test
+    public void getCommunityEmailTest() throws Exception {
+        mockMvc.perform(get("http://localhost:8080/communityEmail?city=Culver"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"mail\":\"jaboyd@email.com\"")));
+    }
 }

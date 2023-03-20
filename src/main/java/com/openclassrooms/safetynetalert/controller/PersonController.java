@@ -1,8 +1,10 @@
 package com.openclassrooms.safetynetalert.controller;
 
 import com.openclassrooms.safetynetalert.dto.childAlert.ChildAlertDTO;
+import com.openclassrooms.safetynetalert.dto.communityemail.CommunityEmailDTO;
 import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
 import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
+import com.openclassrooms.safetynetalert.dto.personinfodto.PersonInfoDTO;
 import com.openclassrooms.safetynetalert.model.Person;
 import com.openclassrooms.safetynetalert.service.PersonService;
 import lombok.RequiredArgsConstructor;
@@ -66,5 +68,15 @@ public class PersonController {
     @GetMapping(value = "/childAlert")
     public ChildAlertDTO getChildAlert(@RequestParam String address){
         return personService.getChildAlert(address);
+    }
+
+    @GetMapping (value = "/personInfo")
+    public List<PersonInfoDTO> getPersonInfo(@RequestParam String firstName, String lastName){
+        return personService.getPersonInfo(firstName, lastName);
+    }
+
+    @GetMapping (value = "/communityEmail")
+    public List<CommunityEmailDTO> getCommunityEmail(@RequestParam String city){
+        return personService.getCommunityEmail(city);
     }
 }

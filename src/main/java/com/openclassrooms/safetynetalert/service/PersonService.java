@@ -3,8 +3,10 @@ package com.openclassrooms.safetynetalert.service;
 import com.openclassrooms.safetynetalert.dto.childAlert.ChildAlertDTO;
 import com.openclassrooms.safetynetalert.dto.childAlert.MajorPersonDTO;
 import com.openclassrooms.safetynetalert.dto.childAlert.MinorPersonDTO;
+import com.openclassrooms.safetynetalert.dto.communityemail.CommunityEmailDTO;
 import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
 import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
+import com.openclassrooms.safetynetalert.dto.personinfodto.PersonInfoDTO;
 import com.openclassrooms.safetynetalert.model.Person;
 
 import java.util.List;
@@ -43,4 +45,8 @@ public interface PersonService {
     ChildAlertDTO getChildAlert(String address);
     List<MinorPersonDTO> getMinorPersonDTOList(String address);
     List<MajorPersonDTO> getMajorPersonDTOList(String address);
+
+    List<PersonInfoDTO> getPersonInfo(String firstName, String lastName);
+
+    List<CommunityEmailDTO> getCommunityEmail(String city);
 }
