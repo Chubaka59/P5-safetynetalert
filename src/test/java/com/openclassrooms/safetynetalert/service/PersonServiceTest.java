@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.service;
 
+import com.openclassrooms.safetynetalert.dto.childAlert.ChildAlertDTO;
 import com.openclassrooms.safetynetalert.dto.childAlert.MajorPersonDTO;
 import com.openclassrooms.safetynetalert.dto.childAlert.MinorPersonDTO;
 import com.openclassrooms.safetynetalert.dto.communityemail.CommunityEmailDTO;
@@ -31,10 +32,12 @@ public class PersonServiceTest {
     private Person person;
     private CreatePersonDTO createPersonDTO = mock(CreatePersonDTO.class);
     private UpdatePersonDTO updatePersonDTO;
+    private MedicalRecord medicalRecord;
 
     @BeforeEach
     public void setupPerTest(){
         person = new Person();
+        medicalRecord = new MedicalRecord();
         personService = new PersonServiceImpl(personRepository, medicalRecordRepository);
     }
 
@@ -113,6 +116,33 @@ public class PersonServiceTest {
 
         //WHEN we would update the person THEN an exception is raised
         assertThrows(PersonNotFoundException.class, () -> personService.update(updatePersonDTO, anyString(), anyString()));
+    }
+
+    @Test
+    public void getChildAlertTest(){
+        person.setFirstName("test1");
+        person.setLastName("test1");
+        medicalRecord.setBirthdate(LocalDate.now());
+        MinorPersonDTO minorPersonDTO = new MinorPersonDTO(person, medicalRecord);
+        List<MinorPersonDTO> minorPersonDTOList = new ArrayList<>();
+        minorPersonDTOList.add(minorPersonDTO);
+
+        Person person2 = new Person();
+        person2.setLastName("test2");
+        person2.setLastName("test2");
+        MajorPersonDTO majorPersonDTO = new MajorPersonDTO(person2);
+        List<MajorPersonDTO> majorPersonDTOList = new ArrayList<>();
+        majorPersonDTOList.add(majorPersonDTO);
+
+        when(personService.getMinorPersonDTOList("test")).thenReturn(minorPersonDTOList);
+        when(personService.getMajorPersonDTOList(anyString())).thenReturn(majorPersonDTOList);
+
+
+        ChildAlertDTO childAlertDTO = personService.getChildAlert("test");
+
+
+        assertEquals(childAlertDTO.getMajorPersonDTOList(), majorPersonDTOList);
+        assertEquals(childAlertDTO.getMinorPersonDTOList(), minorPersonDTOList);
     }
 
     @Test

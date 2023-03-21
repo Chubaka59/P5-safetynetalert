@@ -1,17 +1,12 @@
 package com.openclassrooms.safetynetalert;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SafetynetalertApplication implements CommandLineRunner {
+public class SafetynetalertApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SafetynetalertApplication.class, args);
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
     }
 }
