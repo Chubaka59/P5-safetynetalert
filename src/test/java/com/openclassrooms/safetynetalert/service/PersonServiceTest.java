@@ -28,11 +28,8 @@ import static org.mockito.Mockito.*;
 public class PersonServiceTest {
     private PersonRepository personRepository = mock(PersonRepository.class);
     private MedicalRecordRepository medicalRecordRepository = mock(MedicalRecordRepository.class);
-    private PersonService personService;
-    private Person person;
-    private CreatePersonDTO createPersonDTO = mock(CreatePersonDTO.class);
-    private UpdatePersonDTO updatePersonDTO;
-    private MedicalRecord medicalRecord;
+    @MockBean
+    private PersonServiceImpl personService;
 
     @BeforeEach
     public void setupPerTest(){
@@ -58,10 +55,10 @@ public class PersonServiceTest {
     @Test
     public void addTest(){
         //GIVEN the person we would add doesn't exist
-        when(personRepository.getPerson(createPersonDTO.getFirstName(), createPersonDTO.getLastName())).thenReturn(Optional.empty());
+        when(personRepository.getPerson(anyString(), anyString())).thenReturn(Optional.empty());
 
         //WHEN we would add the person
-        personService.add(createPersonDTO);
+        personService.add(new CreatePersonDTO());
 
         //THEN personRepository.add is called 1 time
         verify(personRepository, times(1)).add(any(CreatePersonDTO.class));
@@ -70,10 +67,13 @@ public class PersonServiceTest {
     @Test
     public void addWhenPersonAlreadyExistTest(){
         //GIVEN the person we would add already exist
-        when(personRepository.getPerson(createPersonDTO.getFirstName(), createPersonDTO.getLastName())).thenReturn(Optional.of(person));
+        CreatePersonDTO addExistingPerson = new CreatePersonDTO("test", "test", null, null, null, null, null);
+        Person existingPerson = new Person("test", "test", null, null, null, null, null);
+
+        when(personRepository.getPerson(addExistingPerson.getFirstName(),addExistingPerson.getFirstName())).thenReturn(Optional.of(existingPerson));
 
         //WHEN we would add the person THEN an exception is raised
-        assertThrows(PersonAlreadyExistException.class, () -> personService.add(createPersonDTO));
+        assertThrows(PersonAlreadyExistException.class, () -> personService.add(addExistingPerson));
     }
 
     @Test
@@ -141,8 +141,9 @@ public class PersonServiceTest {
         ChildAlertDTO childAlertDTO = personService.getChildAlert("test");
 
 
-        assertEquals(childAlertDTO.getMajorPersonDTOList(), majorPersonDTOList);
-        assertEquals(childAlertDTO.getMinorPersonDTOList(), minorPersonDTOList);
+        //THEN
+        assertEquals(List.of(new MajorPersonDTO(personMajor)), childAlertDTO.getMajorPersonDTOList());
+        assertEquals(List.of(new MinorPersonDTO(personMinor, medicalRecordMinor)), childAlertDTO.getMinorPersonDTOList());
     }
 
     @Test

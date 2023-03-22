@@ -32,7 +32,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 
     @Override
     public Person add(CreatePersonDTO personDTO){
-        dataRepository.getPersons().add(new Person().create(personDTO));
+        dataRepository.getPersons().add(new Person(personDTO));
         return getPerson(personDTO.getFirstName(), personDTO.getLastName()).orElseThrow();
     }
 
