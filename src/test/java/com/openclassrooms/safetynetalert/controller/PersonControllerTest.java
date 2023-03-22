@@ -3,8 +3,10 @@ package com.openclassrooms.safetynetalert.controller;
 import com.openclassrooms.safetynetalert.dto.childAlert.ChildAlertDTO;
 import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
 import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
+import com.openclassrooms.safetynetalert.dto.personinfodto.PersonInfoDTO;
 import com.openclassrooms.safetynetalert.exception.person.PersonAlreadyExistException;
 import com.openclassrooms.safetynetalert.exception.person.PersonNotFoundException;
+import com.openclassrooms.safetynetalert.model.MedicalRecord;
 import com.openclassrooms.safetynetalert.model.Person;
 import com.openclassrooms.safetynetalert.service.PersonService;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -131,6 +137,19 @@ public class PersonControllerTest {
 
         //THEN personService.getChildAlert is called once
         verify(personService, times(1)).getChildAlert(anyString());
+    }
+
+    @Test
+    public void getPersonInfoTest(){
+        //GIVEN this should return a list
+        MedicalRecord existingMedicalRecord = new MedicalRecord("test", "test", LocalDate.now(), null, null);
+        when(personService.getPersonInfo(any(Optional.class), anyString())).thenReturn(List.of(new PersonInfoDTO(new Person(), existingMedicalRecord)));
+
+        //WHEN the method is called
+        personController.getPersonInfo(Optional.of("test"), "test");
+
+        //THEN personService.getPersonInfo is called once
+        verify(personService, times(1)).getPersonInfo(any(Optional.class), anyString());
     }
 
     @Test

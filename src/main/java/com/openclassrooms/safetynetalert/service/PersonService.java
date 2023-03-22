@@ -10,6 +10,7 @@ import com.openclassrooms.safetynetalert.dto.personinfodto.PersonInfoDTO;
 import com.openclassrooms.safetynetalert.model.Person;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonService {
     /**
@@ -46,7 +47,7 @@ public interface PersonService {
     List<MinorPersonDTO> getMinorPersonDTOList(String address);
     List<MajorPersonDTO> getMajorPersonDTOList(String address);
 
-    List<PersonInfoDTO> getPersonInfo(String firstName, String lastName);
+    List<PersonInfoDTO> getPersonInfo(Optional<String> firstName, String lastName);
 
     List<CommunityEmailDTO> getCommunityEmail(String city);
 }

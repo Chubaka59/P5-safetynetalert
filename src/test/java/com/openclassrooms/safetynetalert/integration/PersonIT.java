@@ -189,6 +189,20 @@ public class PersonIT {
     }
 
     @Test
+    public void getPersonInfoWhenFirstNameIsSpecifiedTest() throws Exception {
+        mockMvc.perform(get("/personInfo?firstName=Brian&lastName=Stelzer"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getPersonInfoWhenFirstNameIsNotSpecifiedTest() throws Exception {
+        mockMvc.perform(get("/personInfo?lastName=Stelzer"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
     public void getCommunityEmailTest() throws Exception {
         mockMvc.perform(get("http://localhost:8080/communityEmail?city=Culver"))
                 .andDo(print())

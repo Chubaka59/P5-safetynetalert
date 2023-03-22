@@ -6,6 +6,7 @@ import com.openclassrooms.safetynetalert.dto.childAlert.MinorPersonDTO;
 import com.openclassrooms.safetynetalert.dto.communityemail.CommunityEmailDTO;
 import com.openclassrooms.safetynetalert.dto.person.CreatePersonDTO;
 import com.openclassrooms.safetynetalert.dto.person.UpdatePersonDTO;
+import com.openclassrooms.safetynetalert.dto.personinfodto.PersonInfoDTO;
 import com.openclassrooms.safetynetalert.exception.person.PersonAlreadyExistException;
 import com.openclassrooms.safetynetalert.exception.person.PersonNotFoundException;
 import com.openclassrooms.safetynetalert.model.MedicalRecord;
@@ -240,6 +241,41 @@ public class PersonServiceTest {
         //THEN we find it in the list
         assertNotEquals(List.of(new MajorPersonDTO(minorPerson)), majorPersonDTOList);
         assertEquals(0, majorPersonDTOList.size());
+    }
+
+    @Test
+    public void getPersonInfoWhenFirstNameIsSpecifiedTest(){
+        //GIVEN 2 different persons with the same lastName are in the list
+        Person existingPerson1 = new Person("test", "test", null, null, null, null, null);
+        Person existingPerson2 = new Person("test2", "test", null, null, null, null, null);
+        when(personRepository.getAllPersons()).thenReturn(List.of(existingPerson1, existingPerson2));
+        MedicalRecord existingMedicalRecord = new MedicalRecord("test", "test", LocalDate.now(), null, null);
+        when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.of(existingMedicalRecord));
+
+        //WHEN we get the information of the person1
+        List<PersonInfoDTO> personInfoDTOList = personService.getPersonInfo(Optional.of("test"), "test");
+
+        //THEN a list is created with the person information
+        assertEquals(List.of(new PersonInfoDTO(existingPerson1, existingMedicalRecord)), personInfoDTOList);
+    }
+
+    @Test
+    public void getPersonInfoWhenFirstNameIsNotSpecifiedTest(){
+        //GIVEN 2 different persons with the same lastName are in the list
+        Person existingPerson1 = new Person("test", "test", null, null, null, null, null);
+        Person existingPerson2 = new Person("test2", "test", null, null, null, null, null);
+        when(personRepository.getAllPersons()).thenReturn(List.of(existingPerson1, existingPerson2));
+        MedicalRecord existingMedicalRecord1 = new MedicalRecord("test", "test", LocalDate.now(), null, null);
+        MedicalRecord existingMedicalRecord2 = new MedicalRecord("test2", "test", LocalDate.now(), null, null);
+        when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.of(existingMedicalRecord1));
+
+        List<PersonInfoDTO> expectedList = List.of(new PersonInfoDTO(existingPerson1, existingMedicalRecord1), new PersonInfoDTO(existingPerson2, existingMedicalRecord2));
+
+        //WHEN we get the information of both persons
+        List<PersonInfoDTO> personInfoDTOList = personService.getPersonInfo(Optional.empty(), "test");
+
+        //THEN a list is created with the persons information
+        assertEquals(expectedList, personInfoDTOList);
     }
 
     @Test

@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,13 +80,19 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonInfoDTO> getPersonInfo(String firstName, String lastName) {
-        return personRepository.getAllPersons()
+    public List<PersonInfoDTO> getPersonInfo(Optional<String> firstName, String lastName) {
+        return firstName.map(s -> personRepository.getAllPersons()
                 .stream()
-                .filter(p -> p.getFirstName().equals(firstName))
+                .filter(p -> p.getLastName().equals(lastName))
+                .filter(p -> p.getFirstName().equals(s))
+                .map(p -> new PersonInfoDTO(p, medicalRecordRepository.getMedicalRecord(p.getFirstName(), p.getLastName()).get()))
+                .toList())
+
+                .orElseGet(() -> personRepository.getAllPersons()
+                .stream()
                 .filter(p -> p.getLastName().equals(lastName))
                 .map(p -> new PersonInfoDTO(p, medicalRecordRepository.getMedicalRecord(p.getFirstName(), p.getLastName()).get()))
-                .toList();
+                .toList());
     }
 
     @Override

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -71,7 +72,7 @@ public class PersonController {
     }
 
     @GetMapping (value = "/personInfo")
-    public List<PersonInfoDTO> getPersonInfo(@RequestParam String firstName, String lastName){
+    public List<PersonInfoDTO> getPersonInfo(@RequestParam (required = false) Optional<String> firstName, @RequestParam String lastName){
         return personService.getPersonInfo(firstName, lastName);
     }
 
