@@ -36,14 +36,6 @@ public class PersonRepositoryImpl implements PersonRepository {
         return getPerson(personDTO.getFirstName(), personDTO.getLastName()).orElseThrow();
     }
 
-    public List<String> findByAddressAndReturnPhoneNumber(String address) {
-        return dataRepository.getPersons()
-                .stream()
-                .filter(person -> person.getAddress().equals(address))
-                .map(person -> person.getPhone())
-                .toList();
-    }
-
     @Override
     public Person delete(Person person) {
         dataRepository.getPersons().removeIf(p -> p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName()));

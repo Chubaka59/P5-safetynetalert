@@ -9,6 +9,7 @@ import com.openclassrooms.safetynetalert.service.MedicalRecordService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -21,14 +22,11 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class MedicalRecordControllerTest {
     private MedicalRecordService medicalRecordService = mock(MedicalRecordService.class);
+    @MockBean
     private MedicalRecordController medicalRecordController;
-    private MedicalRecord medicalRecord;
-    private CreateMedicalRecordDTO createMedicalRecordDTO;
-    private UpdateMedicalRecordDTO updateMedicalRecordDTO;
 
     @BeforeEach
     public void setupPerTest(){
-        medicalRecord = new MedicalRecord();
         medicalRecordController = new MedicalRecordController(medicalRecordService);
     }
 
@@ -47,10 +45,10 @@ public class MedicalRecordControllerTest {
         given(medicalRecordService.add(any(CreateMedicalRecordDTO.class))).willReturn(any(MedicalRecord.class));
 
         //WHEN we post a new medicalRecord
-        ResponseEntity<MedicalRecord> response = medicalRecordController.add(createMedicalRecordDTO);
+        ResponseEntity<MedicalRecord> response = medicalRecordController.add(new CreateMedicalRecordDTO());
 
         //THEN the medicalRecord is created
-        then(medicalRecordService).should().add(createMedicalRecordDTO);
+        then(medicalRecordService).should().add(new CreateMedicalRecordDTO());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
@@ -60,7 +58,7 @@ public class MedicalRecordControllerTest {
         given(medicalRecordService.add(any(CreateMedicalRecordDTO.class))).willThrow(new MedicalRecordAlreadyExistException(anyString(), anyString()));
 
         //WHEN we add a medicalRecord
-        ResponseEntity<MedicalRecord> response = medicalRecordController.add(createMedicalRecordDTO);
+        ResponseEntity<MedicalRecord> response = medicalRecordController.add(new CreateMedicalRecordDTO());
 
         //THEN the response status is CONFLICT
         then(medicalRecordService).shouldHaveNoInteractions();
@@ -70,7 +68,8 @@ public class MedicalRecordControllerTest {
     @Test
     public void deleteTest(){
         //GIVEN a medicalRecord needs to be deleted
-        given(medicalRecordService.delete(anyString(), anyString())).willReturn(medicalRecord);
+        MedicalRecord existingMedicalRecord = new MedicalRecord();
+        given(medicalRecordService.delete(anyString(), anyString())).willReturn(existingMedicalRecord);
 
         //WHEN we request to delete the person
         ResponseEntity<MedicalRecord> response = medicalRecordController.delete(anyString(), anyString());
@@ -96,13 +95,14 @@ public class MedicalRecordControllerTest {
     @Test
     public void updateTest(){
         //GIVEN a medicalRecord will be updated
-        given(medicalRecordService.update(updateMedicalRecordDTO, "test", "test")).willReturn(medicalRecord);
+        MedicalRecord existingMedicalRecord = new MedicalRecord();
+        given(medicalRecordService.update(new UpdateMedicalRecordDTO(), "test", "test")).willReturn(existingMedicalRecord);
 
         //WHEN we update the medicalRecord
-        ResponseEntity<MedicalRecord> response = medicalRecordController.update(updateMedicalRecordDTO, "test", "test");
+        ResponseEntity<MedicalRecord> response = medicalRecordController.update(new UpdateMedicalRecordDTO(), "test", "test");
 
         //THEN the method to update is called and the response is OK
-        then(medicalRecordService).should().update(updateMedicalRecordDTO, "test", "test");
+        then(medicalRecordService).should().update(new UpdateMedicalRecordDTO(), "test", "test");
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 

@@ -9,7 +9,9 @@ import com.openclassrooms.safetynetalert.repository.impl.MedicalRecordRepository
 import com.openclassrooms.safetynetalert.service.impl.MedicalRecordServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,14 +21,12 @@ import static org.mockito.Mockito.*;
 
 public class MedicalRecordServiceTest {
     private MedicalRecordRepositoryImpl medicalRecordRepository = mock(MedicalRecordRepositoryImpl.class);
+    @MockBean
     private MedicalRecordServiceImpl medicalRecordService;
-    private MedicalRecord medicalRecord;
-    private CreateMedicalRecordDTO createMedicalRecordDTO = mock(CreateMedicalRecordDTO.class);
-    private UpdateMedicalRecordDTO updateMedicalRecordDTO;
+
 
     @BeforeEach
     public void setupPerTest(){
-        medicalRecord = new MedicalRecord();
         medicalRecordService = new MedicalRecordServiceImpl(medicalRecordRepository);
     }
 
@@ -46,10 +46,10 @@ public class MedicalRecordServiceTest {
     @Test
     public void addTest(){
         //GIVEN the medicalRecord we would add doesn't exist
-        when(medicalRecordRepository.getMedicalRecord(createMedicalRecordDTO.getFirstName(), createMedicalRecordDTO.getLastName())).thenReturn(Optional.empty());
+        when(medicalRecordRepository.getMedicalRecord(anyString(),anyString())).thenReturn(Optional.empty());
 
         //WHEN we would add the medicalRecord
-        medicalRecordService.add(createMedicalRecordDTO);
+        medicalRecordService.add(new CreateMedicalRecordDTO());
 
         //THEN medicalRecordRepository.add is called 1 time
         verify(medicalRecordRepository, times(1)).add(any(CreateMedicalRecordDTO.class));
@@ -58,16 +58,19 @@ public class MedicalRecordServiceTest {
     @Test
     public void addWhenMedicalRecordAlreadyExistTest(){
         //GIVEN the medicalRecord we would add already exist
-        when(medicalRecordRepository.getMedicalRecord(createMedicalRecordDTO.getFirstName(), createMedicalRecordDTO.getLastName())).thenReturn(Optional.of(medicalRecord));
+        CreateMedicalRecordDTO addExistingMedicalRecord = new CreateMedicalRecordDTO("test", "test", LocalDate.now(), null, null);
+        MedicalRecord existingMedicalRecord = new MedicalRecord("test", "test", LocalDate.now(), null, null);
+
+        when(medicalRecordRepository.getMedicalRecord(addExistingMedicalRecord.getFirstName(), addExistingMedicalRecord.getLastName())).thenReturn(Optional.of(existingMedicalRecord));
 
         //WHEN we would add the medicalRecord THEN an exception is raised
-        assertThrows(MedicalRecordAlreadyExistException.class, () -> medicalRecordService.add(createMedicalRecordDTO));
+        assertThrows(MedicalRecordAlreadyExistException.class, () -> medicalRecordService.add(addExistingMedicalRecord));
     }
 
     @Test
     public void deleteTest(){
         //GIVEN the medicalRecord we would delete is found
-        when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.of(medicalRecord));
+        when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.of(new MedicalRecord()));
 
         //WHEN we would delete
         medicalRecordService.delete(anyString(), anyString());
@@ -88,21 +91,24 @@ public class MedicalRecordServiceTest {
     @Test
     public void updateTest(){
         //GIVEN the medicalRecord we would update is found
-        when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.of(medicalRecord));
+        MedicalRecord existingMedicalRecord = new MedicalRecord("test", "test", LocalDate.now(), null, null);
+        UpdateMedicalRecordDTO updateMedicalRecordDTO = new UpdateMedicalRecordDTO();
+        when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.of(existingMedicalRecord));
 
         //WHEN we would update
         medicalRecordService.update(updateMedicalRecordDTO, anyString(), anyString());
 
         //THEN medicalRecordRepository.update is called 1 time
-        verify(medicalRecordRepository, times(1)).update(medicalRecord, updateMedicalRecordDTO);
+        verify(medicalRecordRepository, times(1)).update(existingMedicalRecord, updateMedicalRecordDTO);
     }
 
     @Test
     public void updateWhenMedicalRecordIsNotFoundTest(){
         //GIVEN the medicalRecord we would update is not found
         when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.empty());
+        UpdateMedicalRecordDTO updateMedicalRecord = new UpdateMedicalRecordDTO();
 
         //WHEN we would update the medicalRecord THEN an exception is raised
-        assertThrows(MedicalRecordNotFoundException.class, () -> medicalRecordService.update(updateMedicalRecordDTO, anyString(), anyString()));
+        assertThrows(MedicalRecordNotFoundException.class, () -> medicalRecordService.update(updateMedicalRecord, anyString(), anyString()));
     }
 }

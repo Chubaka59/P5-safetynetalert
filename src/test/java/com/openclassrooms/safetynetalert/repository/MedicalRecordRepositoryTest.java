@@ -6,6 +6,7 @@ import com.openclassrooms.safetynetalert.model.MedicalRecord;
 import com.openclassrooms.safetynetalert.repository.impl.MedicalRecordRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,25 +18,19 @@ import static org.mockito.Mockito.*;
 
 public class MedicalRecordRepositoryTest {
     private DataRepository dataRepository = mock(DataRepository.class);
+    @MockBean
     private MedicalRecordRepository medicalRecordRepository;
-    private MedicalRecord medicalRecord;
-    private CreateMedicalRecordDTO createMedicalRecordDTO;
-    private UpdateMedicalRecordDTO updateMedicalRecordDTO;
-    private List<MedicalRecord> medicalRecordList;
 
     @BeforeEach
     public void setupPerTest() {
-        medicalRecord = new MedicalRecord();
-        createMedicalRecordDTO = new CreateMedicalRecordDTO();
-        updateMedicalRecordDTO = new UpdateMedicalRecordDTO();
         medicalRecordRepository = new MedicalRecordRepositoryImpl(dataRepository);
-        medicalRecordList = new ArrayList<>();
     }
 
     @Test
     public void getAllMedicalRecordTest() {
         //GIVEN a list should be returned
-        when(dataRepository.getMedicalRecords()).thenReturn(medicalRecordList);
+        MedicalRecord existingMedicalRecord = new MedicalRecord();
+        when(dataRepository.getMedicalRecords()).thenReturn(List.of(existingMedicalRecord));
 
         //WHEN the method is called
         medicalRecordRepository.getAllMedicalRecords();
@@ -47,65 +42,59 @@ public class MedicalRecordRepositoryTest {
     @Test
     public void getMedicalRecordTest(){
         //GIVEN a medicalRecord is in the list
-        medicalRecord.setFirstName("test");
-        medicalRecord.setLastName("test");
-        medicalRecordList.add(medicalRecord);
-        when(dataRepository.getMedicalRecords()).thenReturn(medicalRecordList);
+        MedicalRecord existingMedicalRecord = new MedicalRecord("test", "test", LocalDate.now(), null, null);
+        when(dataRepository.getMedicalRecords()).thenReturn(List.of(existingMedicalRecord));
 
         //WHEN we try ot find this person
         Optional<MedicalRecord> optionalMedicalRecord = medicalRecordRepository.getMedicalRecord("test", "test");
 
         //THEN this person is returned as Optional
         verify(dataRepository, times(1)).getMedicalRecords();
-        assertEquals(optionalMedicalRecord.get(), medicalRecord);
+        assertEquals(Optional.of(existingMedicalRecord), optionalMedicalRecord);
     }
 
     @Test
     public void addTest(){
         //GIVEN there is a medicalRecord to add
-        createMedicalRecordDTO.setFirstName("test");
-        createMedicalRecordDTO.setLastName("test");
-        when(dataRepository.getMedicalRecords()).thenReturn(medicalRecordList);
+        List<MedicalRecord> MedicalRecordList = new ArrayList<>();
+        when(dataRepository.getMedicalRecords()).thenReturn(MedicalRecordList);
 
         //WHEN we add the medicalRecord
-        medicalRecord = medicalRecordRepository.add(createMedicalRecordDTO);
+        MedicalRecord medicalRecord = medicalRecordRepository.add(new CreateMedicalRecordDTO("test", "test", LocalDate.now(), null, null));
 
         //THEN the medicalRecord has been added to the list
-        assertEquals(medicalRecordList.get(0), medicalRecord);
+        assertEquals(MedicalRecordList.get(0), medicalRecord);
     }
 
     @Test
     public void deleteTest(){
         //GIVEN there is a medicalRecord to delete in the personList
-        medicalRecord.setFirstName("test");
-        medicalRecord.setLastName("test");
-        medicalRecordList.add(medicalRecord);
+        MedicalRecord existingMedicalRecord = new MedicalRecord("test", "test", LocalDate.now(), null, null);
+        List<MedicalRecord> medicalRecordList = new ArrayList<>();
+        medicalRecordList.add(existingMedicalRecord);
         when(dataRepository.getMedicalRecords()).thenReturn(medicalRecordList);
 
         //WHEN we delete the medicalRecord
-        medicalRecord = medicalRecordRepository.delete(medicalRecord);
+        MedicalRecord deletedMedicalRecord = medicalRecordRepository.delete(existingMedicalRecord);
 
         //THEN the medicalRecord isn't the list anymore
-        assertEquals(medicalRecordList.size(), 0);
+        assertEquals(0, medicalRecordList.size());
+        assertEquals(existingMedicalRecord, deletedMedicalRecord);
     }
 
     @Test
     public void updateTest(){
         //GIVEN there is a medicalRecord to update in the medicalRecordList and update information
-        medicalRecord.setFirstName("test");
-        medicalRecord.setLastName("test");
-        medicalRecordList.add(medicalRecord);
+        MedicalRecord existingMedicalRecord = new MedicalRecord("test", "test", LocalDate.now(), null, null);
+        UpdateMedicalRecordDTO updateMedicalRecordDTO = new UpdateMedicalRecordDTO(LocalDate.now().minusYears(10), null, null);
+        when(dataRepository.getMedicalRecords()).thenReturn(List.of(existingMedicalRecord));
 
-        when(dataRepository.getMedicalRecords()).thenReturn(medicalRecordList);
-
-        updateMedicalRecordDTO.setBirthdate(LocalDate.now());
-        updateMedicalRecordDTO.setMedications(List.of("test"));
-        updateMedicalRecordDTO.setAllergies(List.of("test"));
+        MedicalRecord expectedMedicalRecord = new MedicalRecord("test", "test", LocalDate.now().minusYears(20), null, null);
 
         //WHEN the medicalRecord is updated
-        medicalRecord = medicalRecordRepository.update(medicalRecord, updateMedicalRecordDTO);
+        MedicalRecord medicalRecord = medicalRecordRepository.update(existingMedicalRecord, updateMedicalRecordDTO);
 
         //THEN the information of the medicalRecord are updated
-        assertEquals(medicalRecordList.get(0), medicalRecord);
+        assertEquals(existingMedicalRecord, medicalRecord);
     }
 }

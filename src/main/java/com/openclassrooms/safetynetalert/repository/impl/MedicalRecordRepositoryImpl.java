@@ -31,7 +31,7 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
 
     @Override
     public MedicalRecord add(CreateMedicalRecordDTO medicalRecordDTO) {
-        dataRepository.getMedicalRecords().add(new MedicalRecord().create(medicalRecordDTO));
+        dataRepository.getMedicalRecords().add(new MedicalRecord(medicalRecordDTO));
         return getMedicalRecord(medicalRecordDTO.getFirstName(), medicalRecordDTO.getLastName()).orElseThrow();
     }
 

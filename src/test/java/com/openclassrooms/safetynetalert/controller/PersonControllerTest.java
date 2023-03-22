@@ -10,6 +10,7 @@ import com.openclassrooms.safetynetalert.service.PersonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -23,19 +24,16 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class PersonControllerTest {
     private PersonService personService = mock(PersonService.class);
+    @MockBean
     private PersonController personController;
-    private Person person;
-    private CreatePersonDTO createPersonDTO;
-    private UpdatePersonDTO updatePersonDTO;
 
     @BeforeEach
     public void setupPerTest(){
-        person = new Person();
         personController = new PersonController(personService);
     }
 
     @Test
-    public void findAllPersonsTest() throws Exception {
+    public void findAllPersonsTest() {
         //WHEN the request to find all persons is sent
         personController.findAllPersons();
 
@@ -44,15 +42,15 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void addTest() throws Exception {
+    public void addTest() {
         //GIVEN we need to add a person
         given(personService.add(any(CreatePersonDTO.class))).willReturn(any(Person.class));
 
         //WHEN we post a new person
-        ResponseEntity<Person> response = personController.add(createPersonDTO);
+        ResponseEntity<Person> response = personController.add(new CreatePersonDTO());
 
         //THEN the person is created
-        then(personService).should().add(createPersonDTO);
+        then(personService).should().add(any(CreatePersonDTO.class));
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
@@ -62,7 +60,7 @@ public class PersonControllerTest {
         given(personService.add(any(CreatePersonDTO.class))).willThrow(new PersonAlreadyExistException(anyString(), anyString()));
 
         //WHEN we add the person
-        ResponseEntity<Person> response = personController.add(createPersonDTO);
+        ResponseEntity<Person> response = personController.add(new CreatePersonDTO());
 
         //THEN the response status is conflict
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
@@ -71,7 +69,8 @@ public class PersonControllerTest {
     @Test
     public void deleteTest() {
         //GIVEN a person needs to be deleted
-        given(personService.delete(anyString(), anyString())).willReturn(person);
+        Person existingPerson = new Person();
+        given(personService.delete(anyString(), anyString())).willReturn(existingPerson);
 
         //WHEN we request to delete the person
         ResponseEntity<Person> response = personController.delete(anyString(), anyString());
@@ -98,13 +97,14 @@ public class PersonControllerTest {
     @Test
     public void updateTest() {
         //GIVEN a person will be updated
-        given(personService.update(updatePersonDTO, "test", "Test")).willReturn(person);
+        Person existingPerson = new Person();
+        given(personService.update(new UpdatePersonDTO(), "test", "Test")).willReturn(existingPerson);
 
         //WHEN we update the person
-        ResponseEntity<Person> response = personController.update(updatePersonDTO, "test", "Test");
+        ResponseEntity<Person> response = personController.update(new UpdatePersonDTO(), "test", "Test");
 
         //THEN the method to update is called and the response is OK
-        then(personService).should().update(updatePersonDTO, "test", "Test");
+        then(personService).should().update(new UpdatePersonDTO(), "test", "Test");
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 

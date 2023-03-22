@@ -54,9 +54,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public ChildAlertDTO getChildAlert(String address){
         List<MinorPersonDTO> minorPersonDTOList = getMinorPersonDTOList(address);
-
         List<MajorPersonDTO> majorPersonDTOList = getMajorPersonDTOList(address);
-
         return new ChildAlertDTO(minorPersonDTOList, majorPersonDTOList);
     }
 

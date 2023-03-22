@@ -5,9 +5,13 @@ import com.openclassrooms.safetynetalert.dto.firestation.UpdateFireStationDTO;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class FireStation {
 
     @NotBlank
@@ -16,13 +20,12 @@ public class FireStation {
     @Max(4)
     private int station;
 
-    public FireStation update(UpdateFireStationDTO fireStationDTO){
+    public FireStation(CreateFireStationDTO fireStationDTO){
+        this.setAddress(fireStationDTO.getAddress());
         this.setStation(fireStationDTO.getStation());
-        return this;
     }
 
-    public FireStation create(CreateFireStationDTO fireStationDTO){
-        this.setAddress(fireStationDTO.getAddress());
+    public FireStation update(UpdateFireStationDTO fireStationDTO){
         this.setStation(fireStationDTO.getStation());
         return this;
     }

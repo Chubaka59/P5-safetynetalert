@@ -33,7 +33,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 
     @Override
     public FireStation add(CreateFireStationDTO fireStationDTO) {
-        dataRepository.getFireStations().add(new FireStation().create(fireStationDTO));
+        dataRepository.getFireStations().add(new FireStation(fireStationDTO));
         return getFireStation(fireStationDTO.getAddress()).orElseThrow();
     }
 

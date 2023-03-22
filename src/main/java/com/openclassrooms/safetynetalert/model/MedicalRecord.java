@@ -5,13 +5,17 @@ import com.openclassrooms.safetynetalert.dto.medicalrecord.CreateMedicalRecordDT
 import com.openclassrooms.safetynetalert.dto.medicalrecord.UpdateMedicalRecordDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MedicalRecord {
     @NotBlank
     private String firstName;
@@ -29,16 +33,15 @@ public class MedicalRecord {
     @NotNull
     private List<String> allergies;
 
-    public MedicalRecord update(UpdateMedicalRecordDTO medicalRecordDTO){
+    public MedicalRecord(CreateMedicalRecordDTO medicalRecordDTO){
+        this.setFirstName(medicalRecordDTO.getFirstName());
+        this.setLastName(medicalRecordDTO.getLastName());
         this.setBirthdate(medicalRecordDTO.getBirthdate());
         this.setMedications(medicalRecordDTO.getMedications());
         this.setAllergies(medicalRecordDTO.getAllergies());
-        return this;
     }
 
-    public MedicalRecord create(CreateMedicalRecordDTO medicalRecordDTO){
-        this.setFirstName(medicalRecordDTO.getFirstName());
-        this.setLastName(medicalRecordDTO.getLastName());
+    public MedicalRecord update(UpdateMedicalRecordDTO medicalRecordDTO){
         this.setBirthdate(medicalRecordDTO.getBirthdate());
         this.setMedications(medicalRecordDTO.getMedications());
         this.setAllergies(medicalRecordDTO.getAllergies());
