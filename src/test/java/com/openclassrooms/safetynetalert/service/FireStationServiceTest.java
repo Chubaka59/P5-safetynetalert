@@ -169,29 +169,37 @@ public class FireStationServiceTest {
         Person existingPerson = new Person("test", "test", "test", null, null, null, null);
         MedicalRecord existingMedicalRecord = new MedicalRecord(null, null, LocalDate.now(), null, null);
         FireStation existingFireStation = new FireStation(null, 1);
+
         when(personRepository.getAllPersons()).thenReturn(List.of(existingPerson));
         when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.of(existingMedicalRecord));
         when(fireStationRepository.getFireStation(anyString())).thenReturn(Optional.of(existingFireStation));
+
         FirePersonDTO expectedFirePersonDTOList = new FirePersonDTO(existingPerson, existingMedicalRecord);
 
         //WHEN we get the Fire information
         FireDTO fireDTO = fireStationService.getFire("test");
 
         //THEN we get the fireStation number and the person information
-        assertEquals(new FireDTO(existingFireStation, List.of(expectedFirePersonDTOList)), fireDTO);
+        assertEquals(new FireDTO(String.valueOf(existingFireStation.getStation()), List.of(expectedFirePersonDTOList)), fireDTO);
     }
 
     @Test
     public void getFireWhenAddressIsUnknown(){
-        //GIVEN a person is in the list and the firestation cannot be found
+        //GIVEN a person is in the list and a fireStation is in the list
         Person existingPerson = new Person("test", "test", "test", null, null, null, null);
         MedicalRecord existingMedicalRecord = new MedicalRecord(null, null, LocalDate.now(), null, null);
+
         when(personRepository.getAllPersons()).thenReturn(List.of(existingPerson));
         when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.of(existingMedicalRecord));
         when(fireStationRepository.getFireStation(anyString())).thenReturn(Optional.empty());
 
-        //WHEN we get the Fire information THEN an exception is raised
-        assertThrows(FireStationNotFoundException.class, () -> fireStationService.getFire("test"));
+        FirePersonDTO expectedFirePersonDTOList = new FirePersonDTO(existingPerson, existingMedicalRecord);
+
+        //WHEN we get the Fire information
+        FireDTO fireDTO = fireStationService.getFire("test");
+
+        //THEN we get the fireStation number and the person information
+        assertEquals(new FireDTO("Unknown", List.of(expectedFirePersonDTOList)), fireDTO);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynetalert.integration;
 
+import com.openclassrooms.safetynetalert.repository.impl.DataRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PersonIT {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    DataRepositoryImpl dataRepository;
 
     @BeforeEach
-    public void setupPerTest(){
+    public void setupPerTest() throws Exception {
+        dataRepository.getDataFromFile();
     }
 
     @Test

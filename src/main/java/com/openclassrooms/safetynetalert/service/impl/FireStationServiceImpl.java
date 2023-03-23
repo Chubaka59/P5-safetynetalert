@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -97,10 +98,9 @@ public class FireStationServiceImpl  implements FireStationService {
                 .map(p -> new FirePersonDTO(p, medicalRecordRepository.getMedicalRecord(p.getFirstName(), p.getLastName()).get()))
                 .toList();
 
-        FireStation fireStation = fireStationRepository.getFireStation(address)
-                .orElseThrow(() -> new FireStationNotFoundException(address));
-
-        return new FireDTO(fireStation, firePersonDTOList);
+        Optional<FireStation> fireStation = fireStationRepository.getFireStation(address);
+        String fireStationNumber = fireStation.map(station -> String.valueOf(station.getStation())).orElse("Unknown");
+        return new FireDTO(fireStationNumber, firePersonDTOList);
     }
 
     @Override
