@@ -1,5 +1,7 @@
 package com.openclassrooms.safetynetalert.integration;
 
+import com.openclassrooms.safetynetalert.repository.impl.DataRepositoryImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,6 +19,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class MedicalRecordIT {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    DataRepositoryImpl dataRepository;
+
+    @BeforeEach
+    public void setupPerTest() throws Exception {
+        dataRepository.getDataFromFile();
+    }
 
     @Test
     public void getTest() throws Exception {
