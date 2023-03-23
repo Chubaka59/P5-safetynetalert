@@ -43,11 +43,39 @@ public interface PersonService {
      */
     Person update(UpdatePersonDTO personDTO, String firstName, String lastName);
 
+    /**
+     * Get a list of child filtered by address and a list of major person
+     * @param address the address to filter
+     * @return the ChildAlertDTO to return
+     */
     ChildAlertDTO getChildAlert(String address);
+
+    /**
+     * get the minor personList for ChildAlert
+     * @param address the address to filter
+     * @return a list of minor person
+     */
     List<MinorPersonDTO> getMinorPersonDTOList(String address);
+
+    /**
+     * get the major personList for ChildAlert
+     * @param address the address to filter
+     * @return a list of major person
+     */
     List<MajorPersonDTO> getMajorPersonDTOList(String address);
 
+    /**
+     * get the information of a specified person, if no firstName, return every person with this lastName
+     * @param firstName an Optional of the firstName of the person
+     * @param lastName the lastName of the person
+     * @return a list of person
+     */
     List<PersonInfoDTO> getPersonInfo(Optional<String> firstName, String lastName);
 
+    /**
+     * Get a list of email filtered by city
+     * @param city the city to filter
+     * @return a list of CommunityEmailDTO
+     */
     List<CommunityEmailDTO> getCommunityEmail(String city);
 }

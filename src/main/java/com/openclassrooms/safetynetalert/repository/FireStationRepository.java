@@ -16,7 +16,7 @@ public interface FireStationRepository {
 
     /**
      * Get a fireStation from its address
-     * @param address the address to filter the fireStation
+     * @param address the address of the fireStation
      * @return an Optional of the fireStation
      */
     Optional<FireStation> getFireStation(String address);
@@ -43,5 +43,10 @@ public interface FireStationRepository {
      */
     FireStation update (FireStation fireStation, UpdateFireStationDTO fireStationDTO);
 
+    /**
+     * Get the addressList of a fireStation
+     * @param stationNumber the fireStation number
+     * @return a list of String
+     */
     List<String> getAddressFromStationNumber(int stationNumber);
 }

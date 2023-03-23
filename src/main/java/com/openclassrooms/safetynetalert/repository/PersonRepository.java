@@ -30,7 +30,7 @@ public interface PersonRepository {
     Person add(CreatePersonDTO personDTO);
 
     /**
-     * Delete a pêrson from the personList
+     * Delete a person from the personList
      * @param person the person to delete
      * @return the person that has been deleted
      */
@@ -44,5 +44,10 @@ public interface PersonRepository {
      */
     Person update(Person person, UpdatePersonDTO personDTO);
 
+    /**
+     * Get a personList from the address
+     * @param address the address to filter
+     * @return a list of person
+     */
     List<Person> findByAddress(String address);
 }

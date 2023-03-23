@@ -39,11 +39,31 @@ public interface FireStationService {
      */
     FireStation update (UpdateFireStationDTO fireStationDTO, String address);
 
+    /**
+     * get a list of person filtered by address from the addresslist of the specified FireStation and count the number of minor persons
+     * @param stationNumber the fireStationNumber to get the address
+     * @return the fireStationDTO to return
+     */
     FireStationDTO getPersonsFromFireStation(int stationNumber);
 
+    /**
+     * get a list of phoneNumber filtered by fireStationNumber
+     * @param firestation the fireStationNumber to filter
+     * @return a list of PhoneAlertDTO
+     */
     List<PhoneAlertDTO> getPhoneAlert(int firestation);
 
+    /**
+     * Get the stationNumber of an address and the personList of this address
+     * @param address a String of the address
+     * @return The FireDTO
+     */
     FireDTO getFire(String address);
 
+    /**
+     * Get a list of addresses and the person linked to those address from a list of FireStation
+     * @param stations a list of FireStation
+     * @return a list of FloodDTO
+     */
     List<FloodDTO> getFlood(List<Integer> stations);
 }
