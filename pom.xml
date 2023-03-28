@@ -118,11 +118,6 @@
                     <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
                     <output>file</output>
                     <append>true</append>
-                    <excludes>
-                        <exclude>**/dto/**</exclude>
-                        <exclude>**/model/**</exclude>
-                        <exclude>**/log/**</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
