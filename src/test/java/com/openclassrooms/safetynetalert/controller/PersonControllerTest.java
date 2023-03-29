@@ -128,39 +128,39 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void getChildAlert(){
+    public void getChildListFromAddressTest(){
         //GIVEN this should return a ChildAlertDTO
-        when(personService.getChildAlert(anyString())).thenReturn(any(ChildAlertDTO.class));
+        when(personService.getChildListFromAddress(anyString())).thenReturn(any(ChildAlertDTO.class));
 
         //WHEN the method is called
-        personController.getChildAlert("test");
+        personController.getChildListFromAddress("test");
 
         //THEN personService.getChildAlert is called once
-        verify(personService, times(1)).getChildAlert(anyString());
+        verify(personService, times(1)).getChildListFromAddress(anyString());
     }
 
     @Test
-    public void getPersonInfoTest(){
+    public void getPersonListFromFirstnameAndLastnameTest(){
         //GIVEN this should return a list
         MedicalRecord existingMedicalRecord = new MedicalRecord("test", "test", LocalDate.now(), null, null);
-        when(personService.getPersonInfo(any(Optional.class), anyString())).thenReturn(List.of(new PersonInfoDTO(new Person(), existingMedicalRecord)));
+        when(personService.getPersonListFromFirstnameAndLastnameList(any(Optional.class), anyString())).thenReturn(List.of(new PersonInfoDTO(new Person(), existingMedicalRecord)));
 
         //WHEN the method is called
-        personController.getPersonInfo(Optional.of("test"), "test");
+        personController.getPersonListFromFirstnameAndLastname(Optional.of("test"), "test");
 
         //THEN personService.getPersonInfo is called once
-        verify(personService, times(1)).getPersonInfo(any(Optional.class), anyString());
+        verify(personService, times(1)).getPersonListFromFirstnameAndLastnameList(any(Optional.class), anyString());
     }
 
     @Test
-    public void getCommunityEmailTest(){
+    public void getEmailListFromCityTest(){
         //GIVEN this should return a list
-        when(personService.getCommunityEmail(anyString())).thenReturn(anyList());
+        when(personService.getEmailListFromCity(anyString())).thenReturn(anyList());
 
         //WHEN the method is called
-        personController.getCommunityEmail("test");
+        personController.getEmailListFromCity("test");
 
         //THEN personService.getCommunityEmail is called once
-        verify(personService, times(1)).getCommunityEmail(anyString());
+        verify(personService, times(1)).getEmailListFromCity(anyString());
     }
 }

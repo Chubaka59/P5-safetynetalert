@@ -53,6 +53,6 @@ public class MedicalRecord {
     }
 
     public boolean isMinor(){
-        return getAge() < 18;
+        return getAge() <= 18;
     }
 }

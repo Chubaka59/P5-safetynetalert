@@ -78,7 +78,7 @@ public class FireStationServiceImpl  implements FireStationService {
     }
 
     @Override
-    public List<PhoneAlertDTO> getPhoneAlert(int firestation) {
+    public List<PhoneAlertDTO> getPhoneAlertList(int firestation) {
         List<String> addresses = fireStationRepository.getAddressFromStationNumber(firestation);
         List<PhoneAlertDTO> phoneAlertDTOList = new ArrayList<>();
         for (String address : addresses) {
@@ -91,7 +91,7 @@ public class FireStationServiceImpl  implements FireStationService {
     }
 
     @Override
-    public FireDTO getFire(String address) {
+    public FireDTO getFireStationFromAddress(String address) {
         List<FirePersonDTO> firePersonDTOList = personRepository.getAllPersons()
                 .stream()
                 .filter(p -> p.getAddress().equals(address))
@@ -104,7 +104,7 @@ public class FireStationServiceImpl  implements FireStationService {
     }
 
     @Override
-    public List<FloodDTO> getFlood(List<Integer> stations) {
+    public List<FloodDTO> getHomeListFromFireStationList(List<Integer> stations) {
         List<FloodDTO> floodDTOList = new ArrayList<>();
         for (int station:stations) {
             List<String> addresses = fireStationRepository.getAddressFromStationNumber(station);

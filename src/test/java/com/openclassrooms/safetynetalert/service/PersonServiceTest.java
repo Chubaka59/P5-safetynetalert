@@ -121,7 +121,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void getChildAlertTest(){
+    public void getChildListFromAddressTest(){
         //GIVEN a major person
         Person personMinor = new Person();
         personMinor.setFirstName("test1");
@@ -153,7 +153,7 @@ public class PersonServiceTest {
         when(medicalRecordRepository.getMedicalRecord(personMinor.getFirstName(), personMinor.getLastName())).thenReturn(Optional.of(medicalRecordMinor));
 
 
-        ChildAlertDTO childAlertDTO = personService.getChildAlert("test");
+        ChildAlertDTO childAlertDTO = personService.getChildListFromAddress("test");
 
 
         //THEN
@@ -244,7 +244,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void getPersonInfoWhenFirstNameIsSpecifiedTest(){
+    public void getPersonListFromFirstnameAndLastnameWhenFirstNameIsSpecifiedTest(){
         //GIVEN 2 different persons with the same lastName are in the list
         Person existingPerson1 = new Person("test", "test", null, null, null, null, null);
         Person existingPerson2 = new Person("test2", "test", null, null, null, null, null);
@@ -253,14 +253,14 @@ public class PersonServiceTest {
         when(medicalRecordRepository.getMedicalRecord(anyString(), anyString())).thenReturn(Optional.of(existingMedicalRecord));
 
         //WHEN we get the information of the person1
-        List<PersonInfoDTO> personInfoDTOList = personService.getPersonInfo(Optional.of("test"), "test");
+        List<PersonInfoDTO> personInfoDTOList = personService.getPersonListFromFirstnameAndLastnameList(Optional.of("test"), "test");
 
         //THEN a list is created with the person information
         assertEquals(List.of(new PersonInfoDTO(existingPerson1, existingMedicalRecord)), personInfoDTOList);
     }
 
     @Test
-    public void getPersonInfoWhenFirstNameIsNotSpecifiedTest(){
+    public void getPersonListFromFirstnameAndLastnameWhenFirstNameIsNotSpecifiedTest(){
         //GIVEN 2 different persons with the same lastName are in the list
         Person existingPerson1 = new Person("test", "test", null, null, null, null, null);
         Person existingPerson2 = new Person("test2", "test", null, null, null, null, null);
@@ -272,14 +272,14 @@ public class PersonServiceTest {
         List<PersonInfoDTO> expectedList = List.of(new PersonInfoDTO(existingPerson1, existingMedicalRecord1), new PersonInfoDTO(existingPerson2, existingMedicalRecord2));
 
         //WHEN we get the information of both persons
-        List<PersonInfoDTO> personInfoDTOList = personService.getPersonInfo(Optional.empty(), "test");
+        List<PersonInfoDTO> personInfoDTOList = personService.getPersonListFromFirstnameAndLastnameList(Optional.empty(), "test");
 
         //THEN a list is created with the persons information
         assertEquals(expectedList, personInfoDTOList);
     }
 
     @Test
-    public void getCommunityEmailTest(){
+    public void getEmailListFromCityTest(){
         //GIVEN a person is in the list
         Person person = new Person();
         person.setEmail("testAddress");
@@ -288,7 +288,7 @@ public class PersonServiceTest {
         when(personRepository.getAllPersons()).thenReturn(List.of(person));
 
         //WHEN we get the emails
-        List<CommunityEmailDTO> communityEmailDTOList = personService.getCommunityEmail("testCity");
+        List<CommunityEmailDTO> communityEmailDTOList = personService.getEmailListFromCity("testCity");
 
         //THEN we find the mail of this person
         assertEquals(List.of(new CommunityEmailDTO(person)), communityEmailDTOList);

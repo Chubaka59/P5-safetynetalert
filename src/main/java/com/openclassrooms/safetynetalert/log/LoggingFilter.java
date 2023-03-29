@@ -37,9 +37,8 @@ public class LoggingFilter extends OncePerRequestFilter {
                 response.getCharacterEncoding());
 
         log.info(
-                "FINISHED PROCESSING : METHOD={}; REQUESTURI={}; REQUEST PAYLOAD={}; RESPONSE CODE={}; RESPONSE={}; TIME TAKEN={}",
-                request.getMethod(), request.getRequestURI(), requestBody, response.getStatus(), responseBody,
-                timeTaken);
+                "FINISHED PROCESSING : RESPONSE CODE={}; RESPONSE={}; TIME TAKEN={}",
+                response.getStatus(), responseBody, timeTaken);
         responseWrapper.copyBodyToResponse();
     }
 

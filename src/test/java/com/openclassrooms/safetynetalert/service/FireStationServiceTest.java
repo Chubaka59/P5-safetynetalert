@@ -149,14 +149,14 @@ public class FireStationServiceTest {
     }
 
     @Test
-    public void getPhoneAlertTest(){
+    public void getPhoneAlertListTest(){
         //GIVEN it should return an addressList and a personList
         Person existingPerson = new Person("test", "test", null, null, null, "0123456789", null);
         when(fireStationRepository.getAddressFromStationNumber(anyInt())).thenReturn(List.of("test"));
         when(personRepository.findByAddress(anyString())).thenReturn(List.of(existingPerson));
 
         //WHEN we request for the phoneAlert
-        List<PhoneAlertDTO> phoneAlertDTOList = fireStationService.getPhoneAlert(1);
+        List<PhoneAlertDTO> phoneAlertDTOList = fireStationService.getPhoneAlertList(1);
 
         //THEN a list is returned with person's phone number
         assertEquals(1, phoneAlertDTOList.size());
@@ -164,7 +164,7 @@ public class FireStationServiceTest {
     }
 
     @Test
-    public void getFireTest(){
+    public void getFireStationFromAddressTest(){
         //GIVEN a person is in the list and a fireStation is in the list
         Person existingPerson = new Person("test", "test", "test", null, null, null, null);
         MedicalRecord existingMedicalRecord = new MedicalRecord(null, null, LocalDate.now(), null, null);
@@ -177,7 +177,7 @@ public class FireStationServiceTest {
         FirePersonDTO expectedFirePersonDTOList = new FirePersonDTO(existingPerson, existingMedicalRecord);
 
         //WHEN we get the Fire information
-        FireDTO fireDTO = fireStationService.getFire("test");
+        FireDTO fireDTO = fireStationService.getFireStationFromAddress("test");
 
         //THEN we get the fireStation number and the person information
         assertEquals(new FireDTO(String.valueOf(existingFireStation.getStation()), List.of(expectedFirePersonDTOList)), fireDTO);
@@ -196,14 +196,14 @@ public class FireStationServiceTest {
         FirePersonDTO expectedFirePersonDTOList = new FirePersonDTO(existingPerson, existingMedicalRecord);
 
         //WHEN we get the Fire information
-        FireDTO fireDTO = fireStationService.getFire("test");
+        FireDTO fireDTO = fireStationService.getFireStationFromAddress("test");
 
         //THEN we get the fireStation number and the person information
         assertEquals(new FireDTO("Unknown", List.of(expectedFirePersonDTOList)), fireDTO);
     }
 
     @Test
-    public void getFloodTest(){
+    public void getHomeListFromFireStationListTest(){
         //GIVEN a person is in the list
         Person existingPerson = new Person("test", "test", "testAddress", null, null, null, null);
         MedicalRecord existingMedicalRecord = new MedicalRecord("test", "test", LocalDate.now(), null, null);
@@ -213,7 +213,7 @@ public class FireStationServiceTest {
         FloodPersonDTO expectedFloodPersonDTO = new FloodPersonDTO(existingPerson, existingMedicalRecord);
 
         //WHEN we get for the flood list
-        List<FloodDTO> floodDTOList = fireStationService.getFlood(List.of(1));
+        List<FloodDTO> floodDTOList = fireStationService.getHomeListFromFireStationList(List.of(1));
 
         //THEN the person and the address are matching
         assertEquals(List.of(new FloodDTO("testAddress", List.of(expectedFloodPersonDTO))), floodDTOList);

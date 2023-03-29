@@ -53,7 +53,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public ChildAlertDTO getChildAlert(String address){
+    public ChildAlertDTO getChildListFromAddress(String address){
         List<MinorPersonDTO> minorPersonDTOList = getMinorPersonDTOList(address);
         List<MajorPersonDTO> majorPersonDTOList = getMajorPersonDTOList(address);
         return new ChildAlertDTO(minorPersonDTOList, majorPersonDTOList);
@@ -80,7 +80,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonInfoDTO> getPersonInfo(Optional<String> firstName, String lastName) {
+    public List<PersonInfoDTO> getPersonListFromFirstnameAndLastnameList(Optional<String> firstName, String lastName) {
         return firstName.map(s -> personRepository.getAllPersons()
                 .stream()
                 .filter(p -> p.getLastName().equals(lastName))
@@ -96,11 +96,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<CommunityEmailDTO> getCommunityEmail(String city) {
+    public List<CommunityEmailDTO> getEmailListFromCity(String city) {
         return personRepository.getAllPersons()
                 .stream()
                 .filter(p -> p.getCity().equals(city))
                 .map(CommunityEmailDTO::new)
+                .distinct()
                 .collect(Collectors.toList());
     }
 }

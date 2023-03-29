@@ -135,39 +135,39 @@ public class FireStationControllerTest {
     }
 
     @Test
-    public void getPhoneAlertTest(){
+    public void getPhoneAlertListTest(){
         //GIVEN this will return a list
-        when(fireStationService.getPhoneAlert(anyInt())).thenReturn(anyList());
+        when(fireStationService.getPhoneAlertList(anyInt())).thenReturn(anyList());
 
         //WHEN we call the method
-        fireStationController.getPhoneAlert(1);
+        fireStationController.getPhoneAlertList(1);
 
         //THEN fireStationService.getPhoneAlert is called once
-        verify(fireStationService, times(1)).getPhoneAlert(anyInt());
+        verify(fireStationService, times(1)).getPhoneAlertList(anyInt());
     }
 
     @Test
-    public void getFire(){
+    public void getFireStationFromAddressTest(){
         //GIVEN this will return a FireDTO
-        when(fireStationService.getFire(anyString())).thenReturn(any(FireDTO.class));
+        when(fireStationService.getFireStationFromAddress(anyString())).thenReturn(any(FireDTO.class));
 
         //WHEN the method is called
-        fireStationController.getFire("test");
+        fireStationController.getFireStationFromAddress("test");
 
         //THEN fireStationService.getFire is called once
-        verify(fireStationService, times(1)).getFire(anyString());
+        verify(fireStationService, times(1)).getFireStationFromAddress(anyString());
     }
 
     @Test
-    public void getFlood(){
+    public void getHomeListFromFireStationListTest(){
         //GIVEN this should use a list as parameter and return a list
         List<Integer> stations = new ArrayList<>();
-        when(fireStationService.getFlood(anyList())).thenReturn(anyList());
+        when(fireStationService.getHomeListFromFireStationList(anyList())).thenReturn(anyList());
 
         //WHEN the method is called
-        fireStationService.getFlood(stations);
+        fireStationService.getHomeListFromFireStationList(stations);
 
         //THEN fireStationService.getFlood is called once
-        verify(fireStationService, times(1)).getFlood(anyList());
+        verify(fireStationService, times(1)).getHomeListFromFireStationList(anyList());
     }
 }

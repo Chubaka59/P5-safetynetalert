@@ -63,7 +63,6 @@
                     <append>true</append>
                     <excludes>
                         <exclude>**/dto/**</exclude>
-                        <exclude>**/model/**</exclude>
                         <exclude>**/log/**</exclude>
                     </excludes>
                 </configuration>

@@ -67,17 +67,17 @@ public class PersonController {
     }
 
     @GetMapping(value = "/childAlert")
-    public ChildAlertDTO getChildAlert(@RequestParam String address){
-        return personService.getChildAlert(address);
+    public ChildAlertDTO getChildListFromAddress(@RequestParam String address){
+        return personService.getChildListFromAddress(address);
     }
 
     @GetMapping (value = "/personInfo")
-    public List<PersonInfoDTO> getPersonInfo(@RequestParam (required = false) Optional<String> firstName, @RequestParam String lastName){
-        return personService.getPersonInfo(firstName, lastName);
+    public List<PersonInfoDTO> getPersonListFromFirstnameAndLastname(@RequestParam (required = false) Optional<String> firstName, @RequestParam String lastName){
+        return personService.getPersonListFromFirstnameAndLastnameList(firstName, lastName);
     }
 
     @GetMapping (value = "/communityEmail")
-    public List<CommunityEmailDTO> getCommunityEmail(@RequestParam String city){
-        return personService.getCommunityEmail(city);
+    public List<CommunityEmailDTO> getEmailListFromCity(@RequestParam String city){
+        return personService.getEmailListFromCity(city);
     }
 }

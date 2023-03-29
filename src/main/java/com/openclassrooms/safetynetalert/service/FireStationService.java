@@ -51,19 +51,19 @@ public interface FireStationService {
      * @param firestation the fireStationNumber to filter
      * @return a list of PhoneAlertDTO
      */
-    List<PhoneAlertDTO> getPhoneAlert(int firestation);
+    List<PhoneAlertDTO> getPhoneAlertList(int firestation);
 
     /**
      * Get the stationNumber of an address and the personList of this address
      * @param address a String of the address
      * @return The FireDTO
      */
-    FireDTO getFire(String address);
+    FireDTO getFireStationFromAddress(String address);
 
     /**
      * Get a list of addresses and the person linked to those address from a list of FireStation
      * @param stations a list of FireStation
      * @return a list of FloodDTO
      */
-    List<FloodDTO> getFlood(List<Integer> stations);
+    List<FloodDTO> getHomeListFromFireStationList(List<Integer> stations);
 }

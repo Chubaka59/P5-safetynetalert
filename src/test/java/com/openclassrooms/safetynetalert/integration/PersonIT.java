@@ -186,28 +186,28 @@ public class PersonIT {
     }
 
     @Test
-    public void getChildAlertTest() throws Exception {
+    public void getChildListFromAddressTest() throws Exception {
         mockMvc.perform(get("/childAlert?address=947 E. Rose Dr"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void getPersonInfoWhenFirstNameIsSpecifiedTest() throws Exception {
+    public void getPersonListFromFirstnameAndLastnameWhenFirstNameIsSpecifiedTest() throws Exception {
         mockMvc.perform(get("/personInfo?firstName=Brian&lastName=Stelzer"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void getPersonInfoWhenFirstNameIsNotSpecifiedTest() throws Exception {
+    public void getPersonListFromFirstnameAndLastnameWhenFirstNameIsNotSpecifiedTest() throws Exception {
         mockMvc.perform(get("/personInfo?lastName=Stelzer"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void getCommunityEmailTest() throws Exception {
+    public void getEmailListFromCityTest() throws Exception {
         mockMvc.perform(get("http://localhost:8080/communityEmail?city=Culver"))
                 .andDo(print())
                 .andExpect(status().isOk());

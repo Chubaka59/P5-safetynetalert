@@ -164,7 +164,7 @@ public class FireStationIT {
     }
 
     @Test
-    public void getPhoneAlertTest() throws Exception {
+    public void getPhoneAlertListTest() throws Exception {
         //WHEN the request is sent THEN we get a list of phone number
         mockMvc.perform(get("/phoneAlert?firestation=1"))
                 .andDo(print())
@@ -172,7 +172,7 @@ public class FireStationIT {
     }
 
     @Test
-    public void getFireTest() throws Exception {
+    public void getFireStationFromAddressTest() throws Exception {
         //WHEN the request is sent THEN we get a person with the correct information
         mockMvc.perform(get("/fire?address=1509 Culver St"))
                 .andDo(print())
@@ -180,7 +180,7 @@ public class FireStationIT {
     }
 
     @Test
-    public void getFloodTest() throws Exception {
+    public void getHomeListFromFireStationListTest() throws Exception {
         //WHEN the request is sent THEN we get the list with an address and a firstName of both stations
         mockMvc.perform(get("/flood/stations?stations=1,2"))
                 .andDo(print())

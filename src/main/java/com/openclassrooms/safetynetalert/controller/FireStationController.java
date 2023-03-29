@@ -74,17 +74,17 @@ public class FireStationController {
     }
 
     @GetMapping (value = "/phoneAlert")
-    public List<PhoneAlertDTO> getPhoneAlert(@RequestParam int firestation){
-        return fireStationService.getPhoneAlert(firestation);
+    public List<PhoneAlertDTO> getPhoneAlertList(@RequestParam int firestation){
+        return fireStationService.getPhoneAlertList(firestation);
     }
 
     @GetMapping (value = "/fire")
-    public FireDTO getFire(@RequestParam String address){
-        return fireStationService.getFire(address);
+    public FireDTO getFireStationFromAddress(@RequestParam String address){
+        return fireStationService.getFireStationFromAddress(address);
     }
 
     @GetMapping (value = "/flood/stations")
-    public List<FloodDTO> getFlood(@RequestParam List<Integer> stations){
-        return fireStationService.getFlood(stations);
+    public List<FloodDTO> getHomeListFromFireStationList(@RequestParam List<Integer> stations){
+        return fireStationService.getHomeListFromFireStationList(stations);
     }
 }

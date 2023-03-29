@@ -17,7 +17,7 @@ A step by step series of examples that tell you how to get a development env run
 
 1.Install Java:
 
-https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html
+https://www.oracle.com/java/technologies/downloads/#jdk17-windows
 
 2.Install Maven:
 
