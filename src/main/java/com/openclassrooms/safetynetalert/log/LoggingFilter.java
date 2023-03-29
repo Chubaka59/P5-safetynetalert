@@ -22,12 +22,17 @@ public class LoggingFilter extends OncePerRequestFilter {
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
+
+        String requestBody = getStringValue(requestWrapper.getContentAsByteArray(),
+                request.getCharacterEncoding());
+        log.info("REQUEST : METHOD={}; REQUESTURI={}; PARAMETERS={}; REQUEST PAYLOAD={};  ",
+                request.getMethod(), request.getRequestURI(), request.getQueryString(), requestBody);
+
+
         long startTime = System.currentTimeMillis();
         filterChain.doFilter(requestWrapper, responseWrapper);
         long timeTaken = System.currentTimeMillis() - startTime;
 
-        String requestBody = getStringValue(requestWrapper.getContentAsByteArray(),
-                request.getCharacterEncoding());
         String responseBody = getStringValue(responseWrapper.getContentAsByteArray(),
                 response.getCharacterEncoding());
 
